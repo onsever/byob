@@ -20,6 +20,7 @@ export default function ValidationScreen() {
   const [image, setImage] = React.useState(null);
   const [flash, setFlash] = React.useState(Camera.Constants.FlashMode.off);
   const [uploading, setUploading] = React.useState(false);
+  const [resultText, setResultText] = React.useState("");
 
   const camera = React.useRef(null);
 
@@ -32,6 +33,17 @@ export default function ValidationScreen() {
       setHasPermission(cameraStatus.status === "granted");
     })();
   }, []);
+
+  React.useEffect(() => {
+    if (loaded) {
+      if (error) {
+        console.log(error);
+      }
+      if (result) {
+        setResultText(result.data);
+      }
+    }
+  }, [loaded]);
 
   const takePicture = async () => {
     if (camera) {
@@ -88,6 +100,15 @@ export default function ValidationScreen() {
     );
   };
 
+  const extractTextFromImage = async () => {
+    try {
+      await post("auth/id-scan", { url: image });
+      console.log(result);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       {!image ? (
@@ -111,6 +132,7 @@ export default function ValidationScreen() {
         <View>
           <Text onPress={() => setImage(null)}>TAKE PICTURE AGAIN</Text>
           <Text onPress={uploadImage}>Save</Text>
+          <Text onPress={() => extractTextFromImage()}>Extract Text</Text>
         </View>
       ) : (
         <></>

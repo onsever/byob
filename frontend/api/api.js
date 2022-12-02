@@ -6,6 +6,7 @@ export const api = axios.create({
   baseURL: BASE_URI,
 });
 
+/*
 api.interceptors.request.use(
   async (config) => {
     const user = await getData("user");
@@ -17,3 +18,4 @@ api.interceptors.request.use(
     return Promise.reject();
   }
 );
+*/
