@@ -28,7 +28,7 @@ export default function RegisterScreen({ navigation }) {
           />
         </View>
       </View>
-      <View style={tw`flex flex-column`}>
+      <View style={tw`flex flex-col`}>
         <Input
           inputStyles={"h-11 text-center mb-5"}
           placeholder={`Enter Your Email`}
@@ -61,12 +61,12 @@ export default function RegisterScreen({ navigation }) {
           placeholder={`Address 2`}
           onAction={(text) => console.log(text)}
         />
-        <TouchableOpacity style={tw`flex flex-row justify-center align-center`}>
+        <TouchableOpacity style={tw`flex flex-row justify-center items-center`}>
           <Image source={require("../../assets/wine_glass.png")} />
           <Text style={tw`text-[#640100] mt-12 ml-[-5%]`}>SIGN UP</Text>
         </TouchableOpacity>
       </View>
-      <View style={tw`flex flex-row justify-even items-center mb-5`}>
+      <View style={tw`flex flex-row justify-around items-center mb-5`}>
         <View style={tw`border-b w-[35%] border-[#C5C5C5]`}></View>
         <View style={tw`w-[30%]`}>
           <Text style={tw`text-center text-[#C5C5C5]`}>OR</Text>
@@ -77,7 +77,7 @@ export default function RegisterScreen({ navigation }) {
         <TouchableOpacity
           style={tw`flex flex-row bg-[#F7FAFB] h-[11] items-center justify-center rounded-lg mb-5`}
           onPress={() => {
-            navigation.navigate("Validation");
+            navigation.navigate("Verification");
           }}
         >
           <Image

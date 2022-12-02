@@ -12,12 +12,12 @@ export default function LoginScreen({ navigation }) {
       />
       <View style={tw`pr-10 pl-10 mt-5`}>
         <View style={tw`items-center mb-5`}>
-          <Text style={tw`text-10 mb-2 text-bold`}>Let’s sign you in</Text>
+          <Text style={tw`text-10 mb-2 font-bold`}>Let’s sign you in</Text>
           <Text>Welcome back, You've been missed!!</Text>
         </View>
 
         <View style={tw`flex flex-row justify-between mb-5`}></View>
-        <View style={tw`flex flex-column`}>
+        <View style={tw`flex flex-col`}>
           <Input
             inputStyles={"h-11 text-center mb-5"}
             placeholder={`Enter Your Email`}
@@ -31,7 +31,7 @@ export default function LoginScreen({ navigation }) {
           />
 
           <TouchableOpacity
-            style={tw`flex flex-row justify-center align-center`}
+            style={tw`flex flex-row justify-center items-center`}
           >
             <Image source={require("../../assets/wine_glass.png")} />
             <Text style={tw`text-[#640100] mt-12 ml-[-5%]`}>SIGN IN</Text>
