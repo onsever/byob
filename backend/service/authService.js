@@ -46,8 +46,6 @@ const authService = (() => {
   const idScan = async (imagePath) => {
     const [result] = await client.textDetection(imagePath);
     const detections = result.textAnnotations;
-    console.log("Text:");
-    detections.forEach((text) => console.log(text));
     return detections;
   };
 

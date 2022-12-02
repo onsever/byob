@@ -18,6 +18,7 @@ route.post("/login", (req, res) => {
 });
 
 route.post("/id-scan", (req, res) => {
+  console.log(req.body);
   try {
     authService
       .idScan(req.body.url)

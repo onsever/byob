@@ -76,6 +76,9 @@ export default function RegisterScreen({ navigation }) {
       <View>
         <TouchableOpacity
           style={tw`flex flex-row bg-[#F7FAFB] h-[11] items-center justify-center rounded-lg mb-5`}
+          onPress={() => {
+            navigation.navigate("Validation");
+          }}
         >
           <Image
             style={tw`mr-5`}
@@ -97,10 +100,3 @@ export default function RegisterScreen({ navigation }) {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});
