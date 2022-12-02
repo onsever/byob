@@ -1,6 +1,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginScreen from "../screens/authentication/LoginScreen";
 import RegisterScreen from "../screens/authentication/RegisterScreen";
+import ValidationScreen from "../screens/authentication/ValidationScreen";
 import OnBoardingScreen from "../screens/onboarding/OnBoardingScreen";
 
 const Stack = createNativeStackNavigator();
@@ -23,9 +24,18 @@ const AuthStackNavigator = () => {
             headerShown: false,
           }}
         />
+      </Stack.Group>
+      <Stack.Group>
         <Stack.Screen
           name="Register"
           component={RegisterScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Validation"
+          component={ValidationScreen}
           options={{
             headerShown: false,
           }}
@@ -36,3 +46,7 @@ const AuthStackNavigator = () => {
 };
 
 export default AuthStackNavigator;
+
+/*
+
+*/

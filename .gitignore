@@ -10,6 +10,18 @@ frontend/*.mobileprovision
 frontend/*.orig.*
 frontend/web-build/
 backend/.env
+backend/node_modules/
+backend/.expo/
+backend/dist/
+backend/npm-debug.*
+backend/*.jks
+backend/*.p8
+backend/*.p12
+backend/*.key
+backend/*.mobileprovision
+backend/*.orig.*
+backend/web-build/
+.expo
 
 # macOS
 .DS_Store
