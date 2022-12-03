@@ -18,10 +18,9 @@ route.post("/login", (req, res) => {
 });
 
 route.post("/id-scan", (req, res) => {
-  console.log(req.body);
   try {
     authService
-      .idScan(req.body.url)
+      .idScan(req.body.downloadURL)
       .then((result) => {
         httpHelper.success(res, result);
       })

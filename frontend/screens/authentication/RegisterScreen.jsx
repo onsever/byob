@@ -77,7 +77,7 @@ export default function RegisterScreen({ navigation }) {
         <TouchableOpacity
           style={tw`flex flex-row bg-[#F7FAFB] h-[11] items-center justify-center rounded-lg mb-5`}
           onPress={() => {
-            navigation.navigate("Verification");
+            navigation.navigate("Validation");
           }}
         >
           <Image
