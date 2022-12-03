@@ -1,5 +1,6 @@
 import tokenHelper from "../utils/tokenHelper.js";
 import vision from "@google-cloud/vision";
+import userModel from "../model/user.js";
 
 const CREDENTIALS = JSON.parse(
   JSON.stringify({
@@ -28,10 +29,11 @@ const CONFIG = {
 const client = new vision.ImageAnnotatorClient(CONFIG);
 
 const authService = (() => {
-  const login = (username, password) => {
+  const login = (email, password) => {
     return new Promise(async (resolve, reject) => {
-      const user = await adminModel
-        .findOne({ username: username.toLowerCase() })
+      if(email && password){
+        const user = await userModel
+        .findOne({ email: email.toLowerCase() })
         .exec();
       if (!user) {
         reject("User not Found.");
@@ -41,6 +43,10 @@ const authService = (() => {
           resolve({ token });
         } else reject("Incorrect password.");
       }
+      } else {
+        reject("Email and password required.")
+      }
+      
     });
   };
   const idScan = async (imagePath) => {
