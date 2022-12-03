@@ -44,8 +44,7 @@ export default function VerificationScreen({ route, navigation }) {
 
   React.useEffect(() => {
     post("auth/register", {
-      downloadURL:
-        "https://firebasestorage.googleapis.com/v0/b/byob-36558.appspot.com/o/images%2F155002FE-C580-43CF-8249-46F933ED16AF.jpg?alt=media&token=54bb26c5-3f28-4f9d-8e8b-53e423056050",
+      downloadURL: downloadURL,
       userObj: handleRegistration(),
     });
   }, []);
