@@ -1,69 +1,80 @@
-import { View, Text, TextInput, TouchableOpacity, Image } from "react-native";
+import { View, Text, TouchableOpacity, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "twrnc";
 import Input from "../../components/Input";
+import { registerInputs } from "../../utils/inputs";
+import { registerSchema } from "../../utils/schemas";
+import useInput from "../../hooks/useInput";
 
 export default function RegisterScreen({ navigation }) {
+  const { formik, validatedInputs } = useInput(
+    registerInputs,
+    registerSchema,
+    async (values, actions) => {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      console.log(values);
+      actions.resetForm();
+    }
+  );
+
+  const handleRegister = () => {
+    formik.handleSubmit();
+  };
+
   return (
     <SafeAreaView style={tw`flex-1 pr-10 pl-10 mt-5`}>
       <View style={tw`items-center mb-5`}>
-        <Text style={tw`text-10 mb-2`}>Create an account</Text>
-        <Text>Lorem ipsum Lorem ipsum Lorem ipsum Lorem! </Text>
+        <Text style={tw`text-3xl mb-2 font-semibold`}>Create an account</Text>
         <Text>Sign up now!</Text>
       </View>
 
-      <View style={tw`flex flex-row justify-between mb-5`}>
-        <View style={tw`w-[45%]`}>
-          <Input
-            inputStyles={"h-11 text-center"}
-            placeholder={`First Name`}
-            onAction={(text) => console.log(text)}
-          />
-        </View>
-        <View style={tw`w-[45%]`}>
-          <Input
-            inputStyles={"h-11 text-center"}
-            placeholder={`Last Name`}
-            onAction={(text) => console.log(text)}
-          />
-        </View>
+      <View style={tw`flex flex-row justify-between mb-4`}>
+        {validatedInputs.map((input, index) => {
+          if (index < 2) {
+            return (
+              <View key={index} style={tw`w-[48%]`}>
+                <Input
+                  inputStyles={"h-12"}
+                  placeholder={input.placeholder}
+                  errorMessage={formik.errors[input.name]}
+                  onAction={formik.handleChange(input.name)}
+                  blurAction={formik.handleBlur(input.name)}
+                  keyboardType={input.keyboardType}
+                  title={input.title}
+                  secure={input.secure}
+                  val={formik.values[input.name]}
+                />
+              </View>
+            );
+          }
+        })}
       </View>
       <View style={tw`flex flex-col`}>
-        <Input
-          inputStyles={"h-11 text-center mb-5"}
-          placeholder={`Enter Your Email`}
-          onAction={(text) => console.log(text)}
-        />
-        <Input
-          inputStyles={"h-11 text-center mb-5"}
-          placeholder={`Enter Your Phone Number`}
-          onAction={(text) => console.log(text)}
-        />
-        <Input
-          inputStyles={"h-11 text-center mb-5"}
-          placeholder={`Enter Your Password`}
-          secure={true}
-          onAction={(text) => console.log(text)}
-        />
-        <Input
-          inputStyles={"h-11 text-center mb-5"}
-          placeholder={`Confirm Password`}
-          secure={true}
-          onAction={(text) => console.log(text)}
-        />
-        <Input
-          inputStyles={"h-11 text-center mb-5"}
-          placeholder={`Address 1`}
-          onAction={(text) => console.log(text)}
-        />
-        <Input
-          inputStyles={"h-11 text-center mb-5"}
-          placeholder={`Address 2`}
-          onAction={(text) => console.log(text)}
-        />
-        <TouchableOpacity style={tw`flex flex-row justify-center items-center`}>
+        {validatedInputs.map((input, index) => {
+          if (index > 1) {
+            return (
+              <Input
+                key={index}
+                inputStyles={`h-12 ${index === 7 ? "mb-0" : "mb-4"}`}
+                placeholder={input.placeholder}
+                errorMessage={formik.errors[input.name]}
+                onAction={formik.handleChange(input.name)}
+                blurAction={formik.handleBlur(input.name)}
+                keyboardType={input.keyboardType}
+                title={input.title}
+                secure={input.secure}
+                val={formik.values[input.name]}
+              />
+            );
+          }
+        })}
+
+        <TouchableOpacity
+          style={tw`flex flex-row justify-center items-center`}
+          onPress={handleRegister}
+        >
           <Image source={require("../../assets/wine_glass.png")} />
-          <Text style={tw`text-[#640100] mt-12 ml-[-5%]`}>SIGN UP</Text>
+          <Text style={tw`text-[#640100] ml-[-4%]`}>SIGN UP</Text>
         </TouchableOpacity>
       </View>
       <View style={tw`flex flex-row justify-around items-center mb-5`}>
