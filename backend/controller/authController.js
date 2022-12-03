@@ -8,7 +8,7 @@ const route = express.Router();
 route.post("/login", (req, res) => {
   try {
     authService
-      .login(req.body?.username || null, req.body?.password || null)
+      .login(req.body?.email || null, req.body?.password || null)
       .then((result) => {
         httpHelper.success(res, result);
       })
