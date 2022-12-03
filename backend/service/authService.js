@@ -46,6 +46,7 @@ const authService = (() => {
   const idScan = async (imagePath) => {
     const [result] = await client.textDetection(imagePath);
     const detections = result.textAnnotations;
+    // Validation for eligibility, return boolean isVerified or not.
     return detections;
   };
 
