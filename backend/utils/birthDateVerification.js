@@ -1,13 +1,9 @@
 const filterBySlash = (line) => {
   const results = [];
   const lines = line.split("\n");
-  let counter = 0;
   lines.forEach((line) => {
     if (line.includes("/")) {
-      counter++;
-      if (counter > 2) {
-        results.push(line);
-      }
+      results.push(line);
     }
   });
 
@@ -54,13 +50,16 @@ const findBirthDate = (data) => {
 const verifyBirthDate = (data) => {
   const currentDate = new Date();
   const birthDate = new Date(findBirthDate(data));
-  const age = currentDate.getFullYear() - birthDate.getFullYear();
+  let age = currentDate.getFullYear() - birthDate.getFullYear();
   const m = currentDate.getMonth() - birthDate.getMonth();
   if (m < 0 || (m === 0 && currentDate.getDate() < birthDate.getDate())) {
     age--;
   }
 
-  return age >= 18;
+  return {
+    isAdult: age >= 18,
+    birthDate: birthDate,
+  };
 };
 
 export { verifyBirthDate };

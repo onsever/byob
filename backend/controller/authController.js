@@ -18,13 +18,23 @@ route.post("/login", (req, res) => {
   }
 });
 
-route.post("/id-scan", (req, res) => {
+route.post("/register", (req, res) => {
   try {
     authService
       .idScan(req.body.downloadURL)
       .then((result) => {
         const isVerified = verifyBirthDate(result[0].description);
-        httpHelper.success(res, isVerified);
+
+        if (isVerified.isAdult) {
+          authService
+            .register({ ...req.body.userObj, dob: isVerified.birthDate })
+            .then((result) => {
+              httpHelper.success(res, { ...result, isAdult: true });
+            })
+            .catch((err) => httpHelper.error(res, err));
+        } else {
+          httpHelper.success(res, isVerified);
+        }
       })
       .catch((err) => httpHelper.error(res, err));
   } catch (e) {
