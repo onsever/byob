@@ -3,8 +3,19 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import React from "react";
 import { usePost } from "../../hooks/usePost";
 
-export default function VerificationScreen({ navigation, downloadURL }) {
+export default function VerificationScreen({ route, navigation }) {
   const { post, loading, result, error, loaded } = usePost();
+  const { downloadURL } = route.params;
+
+  console.log("downloadURL", downloadURL);
+
+  // loading is true -> show message
+  // loaded -> true | loading - false
+
+  React.useEffect(() => {
+    console.log("result", result);
+    console.log("error", error);
+  }, [result, error]);
 
   return (
     <SafeAreaView>
@@ -14,9 +25,7 @@ export default function VerificationScreen({ navigation, downloadURL }) {
           textAlign: "center",
         }}
         onPress={() => {
-          const url =
-            "https://firebasestorage.googleapis.com/v0/b/byob-36558.appspot.com/o/images%2Froch.jpeg?alt=media&token=da9c5a75-27c8-4236-a4b4-c9d651032513";
-          post("auth/id-scan", { url });
+          post("auth/id-scan", { downloadURL });
         }}
       >
         Test
@@ -25,15 +34,6 @@ export default function VerificationScreen({ navigation, downloadURL }) {
   );
 }
 
-/*
- React.useEffect(() => {
-    if (loaded) {
-      if (error) {
-        console.log(error);
-      }
-      if (result) {
-        console.log(result);
-      }
-    }
-  }, [loaded]);
-*/
+// verified -> show message -> move to tabnavigator -> registration complete
+// not verified -> show message -> move to login screen
+// in this screen, register to the mongoDB if verification is successful
