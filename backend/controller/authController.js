@@ -1,6 +1,7 @@
 import express from "express";
 import authService from "../service/authService.js";
 import httpHelper from "../utils/httpHelper.js";
+import { verifyBirthDate } from "../utils/birthDateVerification.js";
 
 const route = express.Router();
 
@@ -22,7 +23,8 @@ route.post("/id-scan", (req, res) => {
     authService
       .idScan(req.body.downloadURL)
       .then((result) => {
-        httpHelper.success(res, result);
+        const isVerified = verifyBirthDate(result[0].description);
+        httpHelper.success(res, isVerified);
       })
       .catch((err) => httpHelper.error(res, err));
   } catch (e) {
