@@ -30,6 +30,7 @@ export default function LoginScreen({ navigation }) {
 
   return (
     <SafeAreaView style={tw`flex-1`}>
+<<<<<<< HEAD
       <Image
         source={require("../../assets/loginBackground.png")}
         style={tw`w-full h-80`}
@@ -68,6 +69,9 @@ export default function LoginScreen({ navigation }) {
           </View>
           <View style={tw`border-b w-[35%] border-[#C5C5C5]`}></View>
         </View>
+=======
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+>>>>>>> 5409432 (conflict resolved)
         <View>
           <Image
             source={require("../../assets/loginBackground.png")}
