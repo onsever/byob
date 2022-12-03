@@ -29,7 +29,7 @@ route.post("/register", (req, res) => {
           authService
             .register({ ...req.body.userObj, dob: isVerified.birthDate })
             .then((result) => {
-              httpHelper.success(res, isVerified);
+              httpHelper.success(res, { ...result, isAdult: true });
             })
             .catch((err) => httpHelper.error(res, err));
         } else {

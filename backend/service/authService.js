@@ -1,6 +1,6 @@
 import tokenHelper from "../utils/tokenHelper.js";
 import vision from "@google-cloud/vision";
-import User from "../model/User.js";
+import User from "../model/user.js";
 import bcrypt from "bcrypt";
 
 const CREDENTIALS = JSON.parse(
@@ -33,15 +33,13 @@ const authService = (() => {
   const login = (email, password) => {
     return new Promise(async (resolve, reject) => {
       if (email && password) {
-        const user = await userModel
-          .findOne({ email: email.toLowerCase() })
-          .exec();
+        const user = await User.findOne({ email: email.toLowerCase() }).exec();
         if (!user) {
           reject("User not Found.");
         } else {
           console.log("user", user);
-          if (user.password === password) {
-            const token = tokenHelper.createToken(user.id, user.role);
+          if (await bcrypt.compare(password, user.password)) {
+            const token = tokenHelper.createToken(user._id, user.role);
             resolve({
               token,
               firstName: user.firstName,
@@ -62,12 +60,24 @@ const authService = (() => {
       const user = await User.findOne({ email: credentials.email });
       if (user) {
         reject("User already exists.");
+      } else {
+        const newUser = new User(credentials);
+        const salt = await bcrypt.genSalt(10);
+        newUser.password = await bcrypt.hash(newUser.password, salt);
+        const userInfo = await newUser.save();
+
+        const token = tokenHelper.createToken(userInfo._id, "user");
+
+        resolve({
+          token,
+          firstName: userInfo.firstName,
+          lastName: userInfo.lastName,
+          email: userInfo.email,
+          phone: userInfo.email,
+          dob: userInfo.dob,
+        });
       }
 
-      const newUser = await new User(credentials);
-      const salt = await bcrypt.genSalt(10);
-      newUser.password = await bcrypt.hash(newUser.password, salt);
-      await newUser.save();
       resolve("User registered successfully.");
     });
   };
