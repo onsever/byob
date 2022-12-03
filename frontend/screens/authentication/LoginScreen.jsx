@@ -7,6 +7,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Platform,
+  Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "twrnc";
@@ -14,19 +15,36 @@ import Input from "../../components/Input";
 import { loginInputs } from "../../utils/inputs";
 import { loginSchema } from "../../utils/schemas";
 import useInput from "../../hooks/useInput";
+import { usePost } from "../../hooks/usePost";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { login } from "../../redux/features/authSlice";
 
 export default function LoginScreen({ navigation }) {
+  const { post, result, loaded, loading, error } = usePost();
+  const dispatch = useDispatch();
   const { formik, validatedInputs } = useInput(
     loginInputs,
     loginSchema,
     async (values, actions) => {
-      console.log(values);
+      post("auth/login", values);
     }
   );
 
   const handleLogin = () => {
     formik.handleSubmit();
   };
+
+  useEffect(() => {
+    if (loaded) {
+      if (error) {
+        Alert.alert("Authentication Failed", error.data);
+      } else if (result) {
+        let data = result.data;
+        dispatch(login(data));
+      }
+    }
+  }, [loaded]);
 
   return (
     <SafeAreaView style={tw`flex-1`}>

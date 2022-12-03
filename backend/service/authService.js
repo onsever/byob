@@ -31,22 +31,29 @@ const client = new vision.ImageAnnotatorClient(CONFIG);
 const authService = (() => {
   const login = (email, password) => {
     return new Promise(async (resolve, reject) => {
-      if(email && password){
+      if (email && password) {
         const user = await userModel
-        .findOne({ email: email.toLowerCase() })
-        .exec();
-      if (!user) {
-        reject("User not Found.");
+          .findOne({ email: email.toLowerCase() })
+          .exec();
+        if (!user) {
+          reject("User not Found.");
+        } else {
+          console.log("user", user);
+          if (user.password === password) {
+            const token = tokenHelper.createToken(user.id, user.role);
+            resolve({
+              token,
+              firstName: user.firstName,
+              lastName: user.lastName,
+              email: user.email,
+              phone: user.email,
+              dob: user.dob,
+            });
+          } else reject("Incorrect password.");
+        }
       } else {
-        if (user.password === password) {
-          const token = tokenHelper.createToken(user.id, user.role);
-          resolve({ token });
-        } else reject("Incorrect password.");
+        reject("Email and password required.");
       }
-      } else {
-        reject("Email and password required.")
-      }
-      
     });
   };
   const idScan = async (imagePath) => {
