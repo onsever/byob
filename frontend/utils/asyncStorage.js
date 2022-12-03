@@ -24,7 +24,7 @@ const getData = async (key) => {
 
 const deleteData = async (key) => {
   try {
-    await AsyncStorage.removeItem(key);
+    await AsyncStorage.removeItem(`@${key}`);
   } catch (e) {
     // error reading value
     console.log("Error on get data", e);
