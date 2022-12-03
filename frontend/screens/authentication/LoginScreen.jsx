@@ -132,7 +132,11 @@ export default function LoginScreen({ navigation }) {
             </View>
           </View>
         </View>
+<<<<<<< HEAD
       </View>
+=======
+      </TouchableWithoutFeedback>
+>>>>>>> dfc4fb2 (conflict resolved)
     </SafeAreaView>
   );
 }
