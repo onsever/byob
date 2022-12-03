@@ -7,7 +7,7 @@ import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import ProgressIndicator from "../../components/ProgressIndicator";
 import { Ionicons } from "@expo/vector-icons";
 
-export default function ValidationScreen({ navigation }) {
+export default function ValidationScreen({ route, navigation }) {
   const [type, setType] = React.useState(CameraType.back);
   const [permission, requestPermission] = Camera.useCameraPermissions();
   const [hasPermission, setHasPermission] = React.useState(null);
@@ -18,6 +18,7 @@ export default function ValidationScreen({ navigation }) {
   const [resultText, setResultText] = React.useState("");
   const [progress, setProgress] = React.useState(0);
 
+  const userObj = { ...route.params };
   const camera = React.useRef(null);
 
   React.useEffect(() => {
@@ -96,7 +97,7 @@ export default function ValidationScreen({ navigation }) {
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
             setUploading(false);
-            navigation.navigate("Verification", { downloadURL });
+            navigation.navigate("Verification", { userObj, downloadURL });
           });
         }
       );

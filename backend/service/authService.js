@@ -1,6 +1,7 @@
 import tokenHelper from "../utils/tokenHelper.js";
 import vision from "@google-cloud/vision";
-import userModel from "../model/user.js";
+import User from "../model/User.js";
+import bcrypt from "bcrypt";
 
 const CREDENTIALS = JSON.parse(
   JSON.stringify({
@@ -56,15 +57,31 @@ const authService = (() => {
       }
     });
   };
+  const register = (credentials) => {
+    return new Promise(async (resolve, reject) => {
+      const user = await User.findOne({ email: credentials.email });
+      if (user) {
+        reject("User already exists.");
+      }
+
+      const newUser = await new User(credentials);
+      const salt = await bcrypt.genSalt(10);
+      newUser.password = await bcrypt.hash(newUser.password, salt);
+      await newUser.save();
+      resolve("User registered successfully.");
+    });
+  };
+
   const idScan = async (imagePath) => {
     const [result] = await client.textDetection(imagePath);
     const detections = result.textAnnotations;
-    // Validation for eligibility, return boolean isVerified or not.
+    // Validation for eligibility, rexturn boolean isVerified or not.
     return detections;
   };
 
   return {
     login: login,
+    register: register,
     idScan: idScan,
   };
 })();
