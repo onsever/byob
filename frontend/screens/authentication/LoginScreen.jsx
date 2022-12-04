@@ -3,10 +3,8 @@ import {
   Text,
   TouchableOpacity,
   Image,
-  KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
-  Platform,
   Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -16,11 +14,30 @@ import { loginInputs } from "../../utils/inputs";
 import { loginSchema } from "../../utils/schemas";
 import useInput from "../../hooks/useInput";
 import { usePost } from "../../hooks/usePost";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { login } from "../../redux/features/authSlice";
 
+import * as Google from "expo-auth-session/providers/google";
+import * as WebBrowser from "expo-web-browser";
+import {
+  ANDROID_CLIENT_ID,
+  EXPO_CLIENT_ID,
+  GOOGLE_FETCH_URL,
+  IOS_CLIENT_ID,
+} from "../../constants/googleAuth";
+
+// ALlows authentication to complete and return back response
+WebBrowser.maybeCompleteAuthSession();
+
 export default function LoginScreen({ navigation }) {
+  const [accessToken, setAccessToken] = useState("");
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    androidClientId: ANDROID_CLIENT_ID,
+    iosClientId: IOS_CLIENT_ID,
+    expoClientId: EXPO_CLIENT_ID,
+  });
+
   const { post, result, loaded, loading, error } = usePost();
   const dispatch = useDispatch();
   const { formik, validatedInputs } = useInput(
@@ -45,6 +62,41 @@ export default function LoginScreen({ navigation }) {
       }
     }
   }, [loaded]);
+
+  useEffect(() => {
+    if (response) {
+      setAccessToken(response.authentication.accessToken);
+    }
+  }, [response]);
+
+  useEffect(() => {
+    if (accessToken) {
+      getUserData();
+    }
+  }, [accessToken]);
+
+  const getUserData = async () => {
+    let userInfoResponse = await fetch(GOOGLE_FETCH_URL, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+
+    userInfoResponse.json().then((data) => {
+      /* 
+      Response of data ---> 
+      {
+        "email": "bajracharyaroch@gmail.com", 
+        "family_name": "Bajracharya", 
+        "given_name": "Roch", 
+        "id": "112841800121620547368", 
+        "locale": "en", 
+        "name": "Roch Bajracharya", 
+        "picture": "https://lh3.googleusercontent.com/a/ALm5wu29V0uwvVGCV4499C_2hVHGXSiZUygsmCAjRJy9=s96-c", 
+        "verified_email": true
+    } 
+      */
+      post("auth/login", { ...data, isGoogleSignIn: true });
+    });
+  };
 
   return (
     <SafeAreaView style={tw`flex-1`}>
@@ -95,6 +147,7 @@ export default function LoginScreen({ navigation }) {
             <View>
               <TouchableOpacity
                 style={tw`flex flex-row bg-[#F7FAFB] h-[11] items-center justify-center rounded-lg mb-5`}
+                onPress={() => promptAsync({ showInRecents: true })}
               >
                 <Image
                   style={tw`mr-5`}

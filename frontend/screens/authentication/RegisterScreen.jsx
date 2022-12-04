@@ -5,8 +5,28 @@ import Input from "../../components/Input";
 import { registerInputs } from "../../utils/inputs";
 import { registerSchema } from "../../utils/schemas";
 import useInput from "../../hooks/useInput";
+import * as Google from "expo-auth-session/providers/google";
+import * as WebBrowser from "expo-web-browser";
+import { useEffect, useState } from "react";
+import {
+  ANDROID_CLIENT_ID,
+  EXPO_CLIENT_ID,
+  GOOGLE_FETCH_URL,
+  IOS_CLIENT_ID,
+} from "../../constants/googleAuth";
+
+// ALlows authentication to complete and return back response
+WebBrowser.maybeCompleteAuthSession();
 
 export default function RegisterScreen({ navigation }) {
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    androidClientId: ANDROID_CLIENT_ID,
+    iosClientId: IOS_CLIENT_ID,
+    expoClientId: EXPO_CLIENT_ID,
+  });
+
+  const [accessToken, setAccessToken] = useState("");
+
   const { formik, validatedInputs } = useInput(
     registerInputs,
     registerSchema,
@@ -16,9 +36,44 @@ export default function RegisterScreen({ navigation }) {
     }
   );
 
+  useEffect(() => {
+    if (response) {
+      setAccessToken(response.authentication.accessToken);
+    }
+  }, [response]);
+
+  useEffect(() => {
+    if (accessToken) {
+      getUserData();
+    }
+  }, [accessToken]);
+
   const handleRegister = () => {
     formik.handleSubmit();
     navigation.navigate("Validation", { ...formik.values });
+  };
+
+  const getUserData = async () => {
+    let userInfoResponse = await fetch(GOOGLE_FETCH_URL, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+
+    userInfoResponse.json().then((data) => {
+      /* 
+      Response of data ---> 
+      {
+        "email": "bajracharyaroch@gmail.com", 
+        "family_name": "Bajracharya", 
+        "given_name": "Roch", 
+        "id": "112841800121620547368", 
+        "locale": "en", 
+        "name": "Roch Bajracharya", 
+        "picture": "https://lh3.googleusercontent.com/a/ALm5wu29V0uwvVGCV4499C_2hVHGXSiZUygsmCAjRJy9=s96-c", 
+        "verified_email": true
+    } 
+      */
+      navigation.navigate("Validation", { ...data, isGoogleSignIn: true });
+    });
   };
 
   return (
@@ -88,7 +143,8 @@ export default function RegisterScreen({ navigation }) {
         <TouchableOpacity
           style={tw`flex flex-row bg-[#F7FAFB] h-[11] items-center justify-center rounded-lg mb-5`}
           onPress={() => {
-            navigation.navigate("Validation");
+            // navigation.navigate("Validation");
+            promptAsync({ showInRecents: true });
           }}
         >
           <Image
