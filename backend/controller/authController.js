@@ -8,7 +8,11 @@ const route = express.Router();
 route.post("/login", (req, res) => {
   try {
     authService
-      .login(req.body?.email || null, req.body?.password || null)
+      .login(
+        req.body?.email || null,
+        req.body.isGoogleSignIn ? req.body.id : req.body?.password || null,
+        req.body.isGoogleSignIn
+      )
       .then((result) => {
         httpHelper.success(res, result);
       })

@@ -8,18 +8,21 @@ import useInput from "../../hooks/useInput";
 import * as Google from "expo-auth-session/providers/google";
 import * as WebBrowser from "expo-web-browser";
 import { useEffect, useState } from "react";
+import {
+  ANDROID_CLIENT_ID,
+  EXPO_CLIENT_ID,
+  GOOGLE_FETCH_URL,
+  IOS_CLIENT_ID,
+} from "../../constants/googleAuth";
 
 // ALlows authentication to complete and return back response
 WebBrowser.maybeCompleteAuthSession();
 
 export default function RegisterScreen({ navigation }) {
   const [request, response, promptAsync] = Google.useAuthRequest({
-    androidClientId:
-      "875444786028-vgbm769d4b22ij9qunsvektq48omu8oq.apps.googleusercontent.com",
-    iosClientId:
-      "875444786028-g62f80vu2pse6h2b2ok7573k5ujhhn4b.apps.googleusercontent.com",
-    expoClientId:
-      "875444786028-1re8abq8jouu2lvuvavl6p2ahlb7anuc.apps.googleusercontent.com",
+    androidClientId: ANDROID_CLIENT_ID,
+    iosClientId: IOS_CLIENT_ID,
+    expoClientId: EXPO_CLIENT_ID,
   });
 
   const [accessToken, setAccessToken] = useState("");
@@ -51,12 +54,9 @@ export default function RegisterScreen({ navigation }) {
   };
 
   const getUserData = async () => {
-    let userInfoResponse = await fetch(
-      "https://www.googleapis.com/userinfo/v2/me",
-      {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      }
-    );
+    let userInfoResponse = await fetch(GOOGLE_FETCH_URL, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
 
     userInfoResponse.json().then((data) => {
       /* 
