@@ -30,16 +30,19 @@ const CONFIG = {
 const client = new vision.ImageAnnotatorClient(CONFIG);
 
 const authService = (() => {
-  const login = (email, password) => {
+  const login = (email, password, isGoogleSignIn) => {
     return new Promise(async (resolve, reject) => {
       if (email && password) {
         const user = await User.findOne({ email: email.toLowerCase() }).exec();
         if (!user) {
           reject("User not Found.");
         } else {
-          console.log("user", user);
-          if (await bcrypt.compare(password, user.password)) {
-            const token = tokenHelper.createToken(user._id, user.role);
+          if (
+            isGoogleSignIn
+              ? user.password === password
+              : await bcrypt.compare(password, user.password)
+          ) {
+            const token = tokenHelper.createToken(user._id, email);
             resolve({
               token,
               firstName: user.firstName,
@@ -55,30 +58,89 @@ const authService = (() => {
       }
     });
   };
+
   const register = (credentials) => {
     return new Promise(async (resolve, reject) => {
-      const user = await User.findOne({ email: credentials.email });
-      if (user) {
-        reject("User already exists.");
-      } else {
-        const newUser = new User(credentials);
-        const salt = await bcrypt.genSalt(10);
-        newUser.password = await bcrypt.hash(newUser.password, salt);
-        const userInfo = await newUser.save();
+      try {
+        if (credentials.isGoogleSignIn) {
+          const user = await User.findOne({ email: credentials.email });
+          if (user) {
+            login(credentials.email, credentials.id, true).then((result) => {
+              resolve(result);
+            });
+          } else {
+            const newUser = new User({
+              firstName: credentials["given_name"],
+              lastName: credentials["family_name"],
+              email: credentials["email"],
+              password: credentials["id"],
+              dob: credentials["dob"],
+            });
 
-        const token = tokenHelper.createToken(userInfo._id, "user");
+            await newUser.save();
 
-        resolve({
-          token,
-          firstName: userInfo.firstName,
-          lastName: userInfo.lastName,
-          email: userInfo.email,
-          phone: userInfo.email,
-          dob: userInfo.dob,
-        });
+            const token = tokenHelper.createToken(newUser._id, newUser.email);
+
+            delete newUser.password;
+
+            resolve({
+              token,
+              ...newUser,
+            });
+          }
+          resolve(true);
+        } else {
+          if (
+            credentials.firstName &&
+            credentials.lastName &&
+            credentials.email &&
+            credentials.password
+          ) {
+            const user = await User.findOne({ email: credentials.email });
+            if (user) {
+              reject("User already exists.");
+            } else {
+              const newUser = new User(credentials);
+              const salt = await bcrypt.genSalt(10);
+              newUser.password = await bcrypt.hash(newUser.password, salt);
+              const userInfo = await newUser.save();
+
+              const token = tokenHelper.createToken(
+                userInfo._id,
+                newUser.email
+              );
+
+              resolve({
+                token,
+                firstName: userInfo.firstName,
+                lastName: userInfo.lastName,
+                email: userInfo.email,
+                phone: userInfo.email,
+                dob: userInfo.dob,
+              });
+            }
+          } else {
+            let error = "";
+            switch (true) {
+              case !credentials.firstName:
+                error = "firstName";
+                break;
+              case !credentials.lastName:
+                error = "lastName";
+                break;
+              case !credentials.email:
+                error = "email";
+                break;
+              case !credentials.password:
+                error = "password";
+                break;
+            }
+            reject(error + " is required.");
+          }
+        }
+      } catch (error) {
+        console.log("Error in Resgister", error);
       }
-
-      resolve("User registered successfully.");
     });
   };
 

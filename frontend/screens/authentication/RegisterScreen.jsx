@@ -72,7 +72,7 @@ export default function RegisterScreen({ navigation }) {
         "verified_email": true
     } 
       */
-      console.log(data);
+      navigation.navigate("Validation", { ...data, isGoogleSignIn: true });
     });
   };
 

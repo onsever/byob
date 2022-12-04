@@ -4,6 +4,7 @@ import {
   Image,
   TouchableOpacity,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import React from "react";
@@ -22,12 +23,18 @@ export default function VerificationScreen({ route, navigation }) {
     // Move to TabNavigator (user will be stored in MongoDB)
     // Update the global state using Redux.
     // If user is not verified, go to the Login screen.
-    let data = result.data;
-    dispatch(login(data));
+    if (isUserVerified) {
+      let data = result.data;
+      dispatch(login(data));
+    } else {
+      navigation.replace("Login");
+    }
   };
 
   const handleRegistration = () => {
     if (!userObj) return;
+
+    if (userObj.isGoogleSignIn) return userObj;
 
     const userAddress = userObj.addressOne + " " + userObj.addressTwo;
     const newUserObj = {
@@ -43,6 +50,7 @@ export default function VerificationScreen({ route, navigation }) {
   };
 
   React.useEffect(() => {
+    // URL For Testing - https://firebasestorage.googleapis.com/v0/b/byob-36558.appspot.com/o/images%2Fnisha.jpeg?alt=media&token=ec7dfbcd-db10-4d2e-9b90-32450b2bf8e0
     post("auth/register", {
       downloadURL: downloadURL,
       userObj: handleRegistration(),
@@ -52,12 +60,11 @@ export default function VerificationScreen({ route, navigation }) {
   React.useEffect(() => {
     if (loaded) {
       if (error) {
-        console.log("Error on verification: ", error);
+        Alert.alert("Error", error.data);
+        navigation.replace("Login");
       }
       if (result) {
         setIsUserVerified(result.data.isAdult);
-        console.log("Result on verification: ");
-        console.log(result.data);
       }
     }
   }, [loaded]);

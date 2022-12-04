@@ -97,7 +97,10 @@ export default function ValidationScreen({ route, navigation }) {
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
             setUploading(false);
-            navigation.navigate("Verification", { userObj, downloadURL });
+            navigation.replace("Verification", {
+              userObj,
+              downloadURL,
+            });
           });
         }
       );
