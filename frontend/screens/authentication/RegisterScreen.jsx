@@ -5,8 +5,25 @@ import Input from "../../components/Input";
 import { registerInputs } from "../../utils/inputs";
 import { registerSchema } from "../../utils/schemas";
 import useInput from "../../hooks/useInput";
+import * as Google from "expo-auth-session/providers/google";
+import * as WebBrowser from "expo-web-browser";
+import { useEffect, useState } from "react";
+
+// ALlows authentication to complete and return back response
+WebBrowser.maybeCompleteAuthSession();
 
 export default function RegisterScreen({ navigation }) {
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    androidClientId:
+      "875444786028-vgbm769d4b22ij9qunsvektq48omu8oq.apps.googleusercontent.com",
+    iosClientId:
+      "875444786028-g62f80vu2pse6h2b2ok7573k5ujhhn4b.apps.googleusercontent.com",
+    expoClientId:
+      "875444786028-1re8abq8jouu2lvuvavl6p2ahlb7anuc.apps.googleusercontent.com",
+  });
+
+  const [accessToken, setAccessToken] = useState("");
+
   const { formik, validatedInputs } = useInput(
     registerInputs,
     registerSchema,
@@ -16,9 +33,47 @@ export default function RegisterScreen({ navigation }) {
     }
   );
 
+  useEffect(() => {
+    if (response) {
+      setAccessToken(response.authentication.accessToken);
+    }
+  }, [response]);
+
+  useEffect(() => {
+    if (accessToken) {
+      getUserData();
+    }
+  }, [accessToken]);
+
   const handleRegister = () => {
     formik.handleSubmit();
     navigation.navigate("Validation", { ...formik.values });
+  };
+
+  const getUserData = async () => {
+    let userInfoResponse = await fetch(
+      "https://www.googleapis.com/userinfo/v2/me",
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      }
+    );
+
+    userInfoResponse.json().then((data) => {
+      /* 
+      Response of data ---> 
+      {
+        "email": "bajracharyaroch@gmail.com", 
+        "family_name": "Bajracharya", 
+        "given_name": "Roch", 
+        "id": "112841800121620547368", 
+        "locale": "en", 
+        "name": "Roch Bajracharya", 
+        "picture": "https://lh3.googleusercontent.com/a/ALm5wu29V0uwvVGCV4499C_2hVHGXSiZUygsmCAjRJy9=s96-c", 
+        "verified_email": true
+    } 
+      */
+      console.log(data);
+    });
   };
 
   return (
@@ -88,7 +143,8 @@ export default function RegisterScreen({ navigation }) {
         <TouchableOpacity
           style={tw`flex flex-row bg-[#F7FAFB] h-[11] items-center justify-center rounded-lg mb-5`}
           onPress={() => {
-            navigation.navigate("Validation");
+            // navigation.navigate("Validation");
+            promptAsync({ showInRecents: true });
           }}
         >
           <Image
