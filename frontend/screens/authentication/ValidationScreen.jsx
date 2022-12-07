@@ -3,7 +3,6 @@ import { View, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { Camera, CameraType } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
 import { storage } from "../../firebase/firebase";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import ProgressIndicator from "../../components/ProgressIndicator";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -40,6 +39,7 @@ export default function ValidationScreen({ route, navigation }) {
       };
       xhr.responseType = "blob";
       xhr.open("GET", uri, true);
+      xhr.timeout = 1000 * 60;
       xhr.send(null);
     });
   };
@@ -62,17 +62,13 @@ export default function ValidationScreen({ route, navigation }) {
       setUploading(true);
       const blob = await convertToBlob(image);
       const filename = image.substring(image.lastIndexOf("/") + 1);
-      const storageRef = ref(storage, `images/${filename}`);
-      const uploadTask = uploadBytesResumable(storageRef, blob, {
-        contentType: "image/jpeg",
-      });
+      const uploadTask = storage.ref(`images/${filename}`).put(blob);
       uploadTask.on(
         "state_changed",
         (snapshot) => {
           const progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           setProgress(progress);
-          console.log("Upload is " + progress + "% done");
           switch (snapshot.state) {
             case "paused":
               console.log("Upload is paused");
@@ -95,15 +91,24 @@ export default function ValidationScreen({ route, navigation }) {
           }
         },
         () => {
-          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            setUploading(false);
-            navigation.replace("Verification", {
-              userObj,
-              downloadURL,
+          storage
+            .ref("images")
+            .child(filename)
+            .getDownloadURL()
+            .then((url) => {
+              setUploading(false);
+              blob.close();
+              navigation.replace("Verification", {
+                userObj,
+                downloadURL: url,
+              });
             });
-          });
         }
       );
+
+      uploadTask.catch((err) => {
+        console.log(err);
+      });
     } catch (err) {
       console.log("Error", err);
       setUploading(false);

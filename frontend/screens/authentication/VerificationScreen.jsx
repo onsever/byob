@@ -61,6 +61,7 @@ export default function VerificationScreen({ route, navigation }) {
     if (loaded) {
       if (error) {
         Alert.alert("Error", error.data);
+        console.log("Error: ", error);
         navigation.replace("Login");
       }
       if (result) {
