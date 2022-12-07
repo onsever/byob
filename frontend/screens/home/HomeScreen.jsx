@@ -6,12 +6,12 @@ import { Picker } from "@react-native-picker/picker";
 import { useState } from "react";
 import tw from "twrnc";
 
-export default function HomeScreen() {
+export default function HomeScreen({ navigation }) {
   const dispatch = useDispatch();
   const [selectedTable, setSelectedTable] = useState();
   return (
     <SafeAreaView style={tw`flex-1`}>
-      <Text style={tw`font-bold text-8 text-center mt-5`}>Select a Table</Text>
+      {/* <Text style={tw`font-bold text-8 text-center mt-5`}>Select a Table</Text> */}
       <View style={tw`flex-1 justify-center`}>
         <Picker
           selectedValue={selectedTable}
@@ -26,7 +26,10 @@ export default function HomeScreen() {
           <Picker.Item label="Table 7" value="table7" />
           <Picker.Item label="Table 8" value="table8" />
         </Picker>
-        <TouchableOpacity style={tw`flex flex-row justify-center items-center`}>
+        <TouchableOpacity
+          style={tw`flex flex-row justify-center items-center`}
+          onPress={() => navigation.navigate("Tablescreen")}
+        >
           <Image source={require("../../assets/couch4.png")} />
         </TouchableOpacity>
       </View>

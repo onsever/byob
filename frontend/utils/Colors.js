@@ -1,6 +1,6 @@
 export default class Colors {
   constructor() {}
-  static primary = "#313642";
+  static primary = "#640100";
   static secondary = "#404553";
   static pineGlade = "#B1D299";
   static bittersweet = "#FF7361";
