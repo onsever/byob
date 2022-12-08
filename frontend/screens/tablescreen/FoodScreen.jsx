@@ -10,7 +10,10 @@ const Item = ({ image, title, price }) => (
     style={tw`flex flex-row bg-[#F9F9F9] px-5 py-7 justify-center items-center`}
   >
     <View style={tw`w-20`}>
-      <Image source={{ uri: image }} style={tw`w-15 h-15`} />
+      <Image
+        source={image ? { uri: image } : require("../../assets/momo.jpeg")}
+        style={tw`w-15 h-15`}
+      />
     </View>
     <View style={tw`w-60`}>
       <Text style={tw`mb-2 text-5 font-thin`}>{title}</Text>

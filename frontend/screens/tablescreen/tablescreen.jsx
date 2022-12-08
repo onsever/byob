@@ -8,7 +8,7 @@ import Colors from "../../utils/Colors";
 
 const Tab = createMaterialTopTabNavigator();
 
-const Tablescreen = () => {
+const TableScreen = () => {
   return (
     <Tab.Navigator
       screenOptions={{
@@ -23,4 +23,4 @@ const Tablescreen = () => {
   );
 };
 
-export default Tablescreen;
+export default TableScreen;

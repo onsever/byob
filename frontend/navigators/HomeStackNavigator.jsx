@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "../screens/home/HomeScreen";
-import Tablescreen from "../screens/tablescreen/tablescreen";
+import TableScreen from "../screens/tablescreen/TableScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -15,7 +15,7 @@ const HomeStackNavigator = () => {
           //   headerShown: false,
           // }}
         />
-        <Stack.Screen name="Tablescreen" component={Tablescreen} />
+        <Stack.Screen name="Tablescreen" component={TableScreen} />
       </Stack.Group>
     </Stack.Navigator>
   );
