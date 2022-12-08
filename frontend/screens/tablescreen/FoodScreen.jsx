@@ -54,6 +54,9 @@ const FoodScreen = () => {
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
       />
+      <TouchableOpacity style={tw`bg-[#640100] m-3 p-3 rounded-lg`}>
+        <Text style={tw`text-center text-white text-4`}>View Cart (1)</Text>
+      </TouchableOpacity>
     </View>
   );
 };
