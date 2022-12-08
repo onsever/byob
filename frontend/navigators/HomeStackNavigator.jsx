@@ -12,9 +12,6 @@ const HomeStackNavigator = () => {
         <Stack.Screen
           name="Select a Table"
           component={HomeScreen}
-          // options={{
-          //   headerShown: false,
-          // }}
         />
         <Stack.Screen name="Tablescreen" component={TableScreen} />
         <Stack.Screen name="DrinkDescription" component={DrinkDescription} />
