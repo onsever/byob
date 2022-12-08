@@ -7,32 +7,28 @@ export const DrinkData = [
         marketPrice: 10,
         guaranteedPrice: 10,
         currentPrice: 10,
-        image:
-          "https://www.nicepng.com/png/detail/132-1320704_vector-margarita-martini-juice-transprent-png-free-cocktail.png",
+        image: require("../assets/drinks/margarita.png"),
       },
       {
         name: "Manhattan",
         marketPrice: 10,
         guaranteedPrice: 10,
         currentPrice: 10,
-        image:
-          "https://previews.123rf.com/images/ksenica/ksenica1802/ksenica180200059/95817992-the-manhattan-cocktail-hand-drawn-style-.jpg",
+        image: require("../assets/drinks/manhattan.png"),
       },
       {
         name: "Old Fashioned",
         marketPrice: 10,
         guaranteedPrice: 10,
         currentPrice: 10,
-        image:
-          "https://us.123rf.com/450wm/octyabr/octyabr2004/octyabr200400334/octyabr200400334.jpg?ver=6",
+        image: require("../assets/drinks/Old-Fashioned.png"),
       },
       {
         name: "Dry Martini",
         marketPrice: 10,
         guaranteedPrice: 10,
         currentPrice: 10,
-        image:
-          "https://media.istockphoto.com/id/1003411114/vector/martini-glass-cocktail-with-olive.jpg?s=1024x1024&w=is&k=20&c=1frfeCyP4wRpKbNdhGwLw7WXu0-oGWNaBpHcuYP8PTk=",
+        image: require("../assets/drinks/DryMartini.png"),
       },
     ],
   },
@@ -44,32 +40,28 @@ export const DrinkData = [
         marketPrice: 10,
         guaranteedPrice: 10,
         currentPrice: 10,
-        image:
-          "https://www.nicepng.com/png/detail/132-1320704_vector-margarita-martini-juice-transprent-png-free-cocktail.png",
+        image: require("../assets/drinks/BudLight.png"),
       },
       {
         name: "Corona Extra",
         marketPrice: 10,
         guaranteedPrice: 10,
         currentPrice: 10,
-        image:
-          "https://www.nicepng.com/png/detail/132-1320704_vector-margarita-martini-juice-transprent-png-free-cocktail.png",
+        image: require("../assets/drinks/CoronaExtra.png"),
       },
       {
         name: "Stella Artois",
         marketPrice: 10,
         guaranteedPrice: 10,
         currentPrice: 10,
-        image:
-          "https://www.nicepng.com/png/detail/132-1320704_vector-margarita-martini-juice-transprent-png-free-cocktail.png",
+        image: require("../assets/drinks/StellaArtois.png"),
       },
       {
         name: "Heineken Lager",
         marketPrice: 10,
         guaranteedPrice: 10,
         currentPrice: 10,
-        image:
-          "https://www.nicepng.com/png/detail/132-1320704_vector-margarita-martini-juice-transprent-png-free-cocktail.png",
+        image: require("../assets/drinks/HeinekenLager.png"),
       },
     ],
   },
@@ -81,32 +73,28 @@ export const DrinkData = [
         marketPrice: 10,
         guaranteedPrice: 10,
         currentPrice: 10,
-        image:
-          "https://www.nicepng.com/png/detail/132-1320704_vector-margarita-martini-juice-transprent-png-free-cocktail.png",
+        image: require("../assets/drinks/CabernetSauvignon.png"),
       },
       {
         name: "Merlot",
         marketPrice: 10,
         guaranteedPrice: 10,
         currentPrice: 10,
-        image:
-          "https://www.nicepng.com/png/detail/132-1320704_vector-margarita-martini-juice-transprent-png-free-cocktail.png",
+        image: require("../assets/drinks/Merlot.png"),
       },
       {
         name: "Airén",
         marketPrice: 10,
         guaranteedPrice: 10,
         currentPrice: 10,
-        image:
-          "https://www.nicepng.com/png/detail/132-1320704_vector-margarita-martini-juice-transprent-png-free-cocktail.png",
+        image: require("../assets/drinks/Airen.png"),
       },
       {
-        name: "Tempranillo",
+        name: "Fiano di Avellino",
         marketPrice: 10,
         guaranteedPrice: 10,
         currentPrice: 10,
-        image:
-          "https://www.nicepng.com/png/detail/132-1320704_vector-margarita-martini-juice-transprent-png-free-cocktail.png",
+        image: require("../assets/drinks/FianodiAvellino.png"),
       },
     ],
   },
@@ -118,32 +106,28 @@ export const DrinkData = [
         marketPrice: 10,
         guaranteedPrice: 10,
         currentPrice: 10,
-        image:
-          "https://www.nicepng.com/png/detail/132-1320704_vector-margarita-martini-juice-transprent-png-free-cocktail.png",
+        image: require("../assets/drinks/GreenLabel.png"),
       },
       {
         name: "Legent Bourbon Whiskey",
         marketPrice: 10,
         guaranteedPrice: 10,
         currentPrice: 10,
-        image:
-          "https://www.nicepng.com/png/detail/132-1320704_vector-margarita-martini-juice-transprent-png-free-cocktail.png",
+        image: require("../assets/drinks/legent.png"),
       },
       {
         name: "Wild Turkey Longbranch",
         marketPrice: 10,
         guaranteedPrice: 10,
         currentPrice: 10,
-        image:
-          "https://www.nicepng.com/png/detail/132-1320704_vector-margarita-martini-juice-transprent-png-free-cocktail.png",
+        image: require("../assets/drinks/Longbranch.png"),
       },
       {
-        name: "Jack Daniel's Gentleman Jack",
+        name: "Jack Daniel's",
         marketPrice: 10,
         guaranteedPrice: 10,
         currentPrice: 10,
-        image:
-          "https://www.nicepng.com/png/detail/132-1320704_vector-margarita-martini-juice-transprent-png-free-cocktail.png",
+        image: require("../assets/drinks/JD.png"),
       },
     ],
   },

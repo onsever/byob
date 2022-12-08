@@ -12,9 +12,15 @@ import tw from "twrnc";
 import { DrinkData } from "../../utils/DrinkData";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
-const Item = ({ name, marketPrice, guaranteedPrice, currentPrice }) => (
+const Item = ({
+  name,
+  marketPrice,
+  guaranteedPrice,
+  currentPrice,
+  onAction,
+}) => (
   <View style={tw`mt-3`}>
-    <TouchableOpacity style={tw`flex flex-row`}>
+    <TouchableOpacity style={tw`flex flex-row`} onPress={onAction}>
       <Text style={tw`font-thin w-40 `}>{name}</Text>
       <Text style={tw`w-15 text-center`}>$ {marketPrice}</Text>
       <Text style={tw`w-15 text-center`}>$ {guaranteedPrice}</Text>
@@ -22,7 +28,7 @@ const Item = ({ name, marketPrice, guaranteedPrice, currentPrice }) => (
     </TouchableOpacity>
   </View>
 );
-const DrinksScreen = () => {
+const DrinksScreen = ({ navigation }) => {
   const [label, setLabel] = React.useState(null);
 
   const labelHandler = (str) => {
@@ -82,7 +88,17 @@ const DrinksScreen = () => {
         style={tw`mx-5 mb-5`}
         sections={DrinkData}
         keyExtractor={(item, index) => item + index}
-        renderItem={({ item }) => <Item {...item} />}
+        renderItem={({ item, section }) => (
+          <Item
+            {...item}
+            onAction={() => {
+              navigation.navigate("DrinkDescription", {
+                item: item,
+                title: section.title,
+              });
+            }}
+          />
+        )}
         renderSectionHeader={({ section: { title } }) => (
           <View style={tw`border-b-2 border-[#640100] w-full pb-3 my-3`}>
             <Text style={tw`font-semibold text-5 `}>{title}</Text>
