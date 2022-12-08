@@ -8,7 +8,9 @@ import Colors from "../../utils/Colors";
 
 const Tab = createMaterialTopTabNavigator();
 
-const TableScreen = () => {
+const TableScreen = ({ route }) => {
+  const { tableNumber } = route.params;
+  console.log("Table number: " + tableNumber);
   return (
     <Tab.Navigator
       screenOptions={{

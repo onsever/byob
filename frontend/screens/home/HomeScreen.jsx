@@ -8,7 +8,7 @@ import tw from "twrnc";
 
 export default function HomeScreen({ navigation }) {
   const dispatch = useDispatch();
-  const [selectedTable, setSelectedTable] = useState();
+  const [selectedTable, setSelectedTable] = useState("0");
   return (
     <SafeAreaView style={tw`flex-1`}>
       {/* <Text style={tw`font-bold text-8 text-center mt-5`}>Select a Table</Text> */}
@@ -17,18 +17,22 @@ export default function HomeScreen({ navigation }) {
           selectedValue={selectedTable}
           onValueChange={(itemValue, itemIndex) => setSelectedTable(itemValue)}
         >
-          <Picker.Item label="Table 1" value="table1" />
-          <Picker.Item label="Table 2" value="table2" />
-          <Picker.Item label="Table 3" value="table3" />
-          <Picker.Item label="Table 4" value="table4" />
-          <Picker.Item label="Table 5" value="table5" />
-          <Picker.Item label="Table 6" value="table6" />
-          <Picker.Item label="Table 7" value="table7" />
-          <Picker.Item label="Table 8" value="table8" />
+          <Picker.Item label="Table 1" value="1" />
+          <Picker.Item label="Table 2" value="2" />
+          <Picker.Item label="Table 3" value="3" />
+          <Picker.Item label="Table 4" value="4" />
+          <Picker.Item label="Table 5" value="5" />
+          <Picker.Item label="Table 6" value="6" />
+          <Picker.Item label="Table 7" value="7" />
+          <Picker.Item label="Table 8" value="8" />
         </Picker>
         <TouchableOpacity
           style={tw`flex flex-row justify-center items-center`}
-          onPress={() => navigation.navigate("Tablescreen")}
+          onPress={() =>
+            navigation.navigate("Tablescreen", {
+              tableNumber: selectedTable,
+            })
+          }
         >
           <Image source={require("../../assets/couch4.png")} />
         </TouchableOpacity>
