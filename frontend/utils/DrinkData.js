@@ -6,6 +6,7 @@ export const DrinkData = [
         name: "Margarita",
         marketPrice: 10,
         guaranteedPrice: 10,
+        currentPrice: 10,
         image:
           "https://www.nicepng.com/png/detail/132-1320704_vector-margarita-martini-juice-transprent-png-free-cocktail.png",
       },
@@ -13,6 +14,7 @@ export const DrinkData = [
         name: "Manhattan",
         marketPrice: 10,
         guaranteedPrice: 10,
+        currentPrice: 10,
         image:
           "https://previews.123rf.com/images/ksenica/ksenica1802/ksenica180200059/95817992-the-manhattan-cocktail-hand-drawn-style-.jpg",
       },
@@ -20,6 +22,7 @@ export const DrinkData = [
         name: "Old Fashioned",
         marketPrice: 10,
         guaranteedPrice: 10,
+        currentPrice: 10,
         image:
           "https://us.123rf.com/450wm/octyabr/octyabr2004/octyabr200400334/octyabr200400334.jpg?ver=6",
       },
@@ -27,6 +30,7 @@ export const DrinkData = [
         name: "Dry Martini",
         marketPrice: 10,
         guaranteedPrice: 10,
+        currentPrice: 10,
         image:
           "https://media.istockphoto.com/id/1003411114/vector/martini-glass-cocktail-with-olive.jpg?s=1024x1024&w=is&k=20&c=1frfeCyP4wRpKbNdhGwLw7WXu0-oGWNaBpHcuYP8PTk=",
       },
@@ -39,6 +43,7 @@ export const DrinkData = [
         name: "Bud Light",
         marketPrice: 10,
         guaranteedPrice: 10,
+        currentPrice: 10,
         image:
           "https://www.nicepng.com/png/detail/132-1320704_vector-margarita-martini-juice-transprent-png-free-cocktail.png",
       },
@@ -46,6 +51,7 @@ export const DrinkData = [
         name: "Corona Extra",
         marketPrice: 10,
         guaranteedPrice: 10,
+        currentPrice: 10,
         image:
           "https://www.nicepng.com/png/detail/132-1320704_vector-margarita-martini-juice-transprent-png-free-cocktail.png",
       },
@@ -53,6 +59,7 @@ export const DrinkData = [
         name: "Stella Artois",
         marketPrice: 10,
         guaranteedPrice: 10,
+        currentPrice: 10,
         image:
           "https://www.nicepng.com/png/detail/132-1320704_vector-margarita-martini-juice-transprent-png-free-cocktail.png",
       },
@@ -60,6 +67,7 @@ export const DrinkData = [
         name: "Heineken Lager",
         marketPrice: 10,
         guaranteedPrice: 10,
+        currentPrice: 10,
         image:
           "https://www.nicepng.com/png/detail/132-1320704_vector-margarita-martini-juice-transprent-png-free-cocktail.png",
       },
@@ -72,6 +80,7 @@ export const DrinkData = [
         name: "Cabernet Sauvignon",
         marketPrice: 10,
         guaranteedPrice: 10,
+        currentPrice: 10,
         image:
           "https://www.nicepng.com/png/detail/132-1320704_vector-margarita-martini-juice-transprent-png-free-cocktail.png",
       },
@@ -79,6 +88,7 @@ export const DrinkData = [
         name: "Merlot",
         marketPrice: 10,
         guaranteedPrice: 10,
+        currentPrice: 10,
         image:
           "https://www.nicepng.com/png/detail/132-1320704_vector-margarita-martini-juice-transprent-png-free-cocktail.png",
       },
@@ -86,6 +96,7 @@ export const DrinkData = [
         name: "Airén",
         marketPrice: 10,
         guaranteedPrice: 10,
+        currentPrice: 10,
         image:
           "https://www.nicepng.com/png/detail/132-1320704_vector-margarita-martini-juice-transprent-png-free-cocktail.png",
       },
@@ -93,6 +104,7 @@ export const DrinkData = [
         name: "Tempranillo",
         marketPrice: 10,
         guaranteedPrice: 10,
+        currentPrice: 10,
         image:
           "https://www.nicepng.com/png/detail/132-1320704_vector-margarita-martini-juice-transprent-png-free-cocktail.png",
       },
@@ -105,6 +117,7 @@ export const DrinkData = [
         name: "Green Label",
         marketPrice: 10,
         guaranteedPrice: 10,
+        currentPrice: 10,
         image:
           "https://www.nicepng.com/png/detail/132-1320704_vector-margarita-martini-juice-transprent-png-free-cocktail.png",
       },
@@ -112,6 +125,7 @@ export const DrinkData = [
         name: "Legent Bourbon Whiskey",
         marketPrice: 10,
         guaranteedPrice: 10,
+        currentPrice: 10,
         image:
           "https://www.nicepng.com/png/detail/132-1320704_vector-margarita-martini-juice-transprent-png-free-cocktail.png",
       },
@@ -119,6 +133,7 @@ export const DrinkData = [
         name: "Wild Turkey Longbranch",
         marketPrice: 10,
         guaranteedPrice: 10,
+        currentPrice: 10,
         image:
           "https://www.nicepng.com/png/detail/132-1320704_vector-margarita-martini-juice-transprent-png-free-cocktail.png",
       },
@@ -126,6 +141,7 @@ export const DrinkData = [
         name: "Jack Daniel's Gentleman Jack",
         marketPrice: 10,
         guaranteedPrice: 10,
+        currentPrice: 10,
         image:
           "https://www.nicepng.com/png/detail/132-1320704_vector-margarita-martini-juice-transprent-png-free-cocktail.png",
       },
