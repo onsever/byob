@@ -51,7 +51,7 @@ export default function VerificationScreen({ route, navigation }) {
 
   React.useEffect(() => {
     // URL For Testing - https://firebasestorage.googleapis.com/v0/b/byob-36558.appspot.com/o/images%2Fnisha.jpeg?alt=media&token=ec7dfbcd-db10-4d2e-9b90-32450b2bf8e0
-    post("auth/register", {
+    post("auth/user/register", {
       downloadURL: downloadURL,
       userObj: handleRegistration(),
     });
