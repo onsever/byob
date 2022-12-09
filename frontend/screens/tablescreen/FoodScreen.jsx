@@ -1,10 +1,25 @@
-import { View, Text, Image, FlatList, TouchableOpacity, ActivityIndicator } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  FlatList,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import tw from "twrnc";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useFetch } from "../../hooks/useFetch";
 
-const Item = ({ image, title, price, quantity, onIncrease, onDecrease, onAdd }) => (
+const Item = ({
+  image,
+  title,
+  price,
+  quantity,
+  onIncrease,
+  onDecrease,
+  onAdd,
+}) => (
   <View
     style={tw`flex flex-row bg-[#F9F9F9] px-5 py-7 justify-center items-center`}
   >
@@ -49,24 +64,25 @@ const FoodScreen = ({ navigation }) => {
 
   useEffect(() => {
     fetchMenu();
-  }, [])
+  }, []);
 
   const fetchMenu = () => {
-    fetch('menu/food');
-  }
+    fetch("menu/food");
+  };
 
   useEffect(() => {
     if (error) {
-      console.log('Error in fetch constant', error);
+      console.log("Error in fetch constant", error);
     }
 
     if (result) {
-      console.log('result', result);
-      setFoodData(result.map(x => {
-        return { ...x, quantity: 0 }
-      }));
+      setFoodData(
+        result.map((x) => {
+          return { ...x, quantity: 0 };
+        })
+      );
     }
-  }, [loaded])
+  }, [loaded]);
 
   const renderItem = ({ item }) => (
     <Item
@@ -75,50 +91,69 @@ const FoodScreen = ({ navigation }) => {
       price={`$ ${item.price}`}
       quantity={item.quantity}
       onIncrease={() => {
-        setFoodData(foodData.map(x => {
-          if (x._id === item._id) {
-            x.quantity += 1
-          }
-          return x;
-        }))
+        setFoodData(
+          foodData.map((x) => {
+            if (x._id === item._id) {
+              x.quantity += 1;
+            }
+            return x;
+          })
+        );
       }}
       onDecrease={() => {
-        setFoodData(foodData.map(x => {
-          if (x._id === item._id) {
-            x.quantity -= 1
-          }
-          return x;
-        }))
+        setFoodData(
+          foodData.map((x) => {
+            if (x._id === item._id) {
+              x.quantity -= 1;
+            }
+            return x;
+          })
+        );
       }}
       onAdd={() => {
         let tempCart = [...cart];
-        if (tempCart.length && tempCart.some(x => x.foodId === item._id)) {
-          tempCart = tempCart.map(x => {
+        if (tempCart.length && tempCart.some((x) => x.foodId === item._id)) {
+          tempCart = tempCart.map((x) => {
             if (x.foodId === item._id) {
-              x.quantity = item.quantity
+              x.quantity = item.quantity;
             }
           });
           setCart(tempCart);
         } else {
-          setCart([...cart, { foodId: item._id, price: item.price, quantity: item.quantity, name: item.title }])
+          setCart([
+            ...cart,
+            {
+              foodId: item._id,
+              price: item.price,
+              quantity: item.quantity,
+              name: item.title,
+            },
+          ]);
         }
       }}
     />
   );
   return (
     <View style={tw`flex-1 bg-[#F9F9F9]`}>
-      {loading ? <ActivityIndicator /> : <FlatList
-        data={foodData}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-      // refreshing={loading}
-      // refreshControl={loading && <ActivityIndicator />}
-      // onRefresh={() => fetchMenu()}
-      />}
-      <TouchableOpacity style={tw`bg-[#640100] m-3 p-3 rounded-lg`}
-        onPress={() => navigation.navigate('CartScreen', { cart })}
+      {loading ? (
+        <ActivityIndicator />
+      ) : (
+        <FlatList
+          data={foodData}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+          // refreshing={loading}
+          // refreshControl={loading && <ActivityIndicator />}
+          // onRefresh={() => fetchMenu()}
+        />
+      )}
+      <TouchableOpacity
+        style={tw`bg-[#640100] m-3 p-3 rounded-lg`}
+        onPress={() => navigation.navigate("CartScreen", { cart })}
       >
-        <Text style={tw`text-center text-white text-4`}>View Cart ({cart.length})</Text>
+        <Text style={tw`text-center text-white text-4`}>
+          View Cart ({cart.length})
+        </Text>
       </TouchableOpacity>
     </View>
   );
