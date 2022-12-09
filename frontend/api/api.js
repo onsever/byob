@@ -6,11 +6,9 @@ export const api = axios.create({
   baseURL: BASE_URI,
 });
 
-/*
 api.interceptors.request.use(
   async (config) => {
     const user = await getData("user");
-    // console.log("===========>", user.token);
     if (user) config.headers["Authorization"] = `${user.token}`;
     return config;
   },
@@ -18,4 +16,3 @@ api.interceptors.request.use(
     return Promise.reject();
   }
 );
-*/

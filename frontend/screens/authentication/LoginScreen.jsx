@@ -44,7 +44,7 @@ export default function LoginScreen({ navigation }) {
     loginInputs,
     loginSchema,
     async (values, actions) => {
-      post("auth/login", values);
+      post("auth/user/login", values);
     }
   );
 
@@ -55,6 +55,7 @@ export default function LoginScreen({ navigation }) {
   useEffect(() => {
     if (loaded) {
       if (error) {
+        console.log(error);
         Alert.alert("Authentication Failed", error.data);
       } else if (result) {
         let data = result.data;
@@ -94,7 +95,7 @@ export default function LoginScreen({ navigation }) {
         "verified_email": true
     } 
       */
-      post("auth/login", { ...data, isGoogleSignIn: true });
+      post("auth/user/login", { ...data, isGoogleSignIn: true });
     });
   };
 
