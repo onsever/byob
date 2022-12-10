@@ -19,8 +19,10 @@ const Item = ({
   onIncrease,
   onDecrease,
   onAdd,
+  _id,
 }) => (
   <View
+    key={_id}
     style={tw`flex flex-row bg-[#F9F9F9] px-5 py-7 justify-center items-center`}
   >
     <View style={tw`w-20`}>
@@ -142,9 +144,6 @@ const FoodScreen = ({ navigation }) => {
           data={foodData}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
-          // refreshing={loading}
-          // refreshControl={loading && <ActivityIndicator />}
-          // onRefresh={() => fetchMenu()}
         />
       )}
       <TouchableOpacity

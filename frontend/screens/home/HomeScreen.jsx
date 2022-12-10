@@ -24,9 +24,9 @@ export default function HomeScreen({ navigation }) {
   const reserveTable = usePost();
 
   useEffect(() => {
-    if (!fetchConstants.loading) fetchConstants.fetch("constant");
-    if (!fetchUserTable.loading) fetchUserTable.fetch(`user/table`);
-  }, []);
+    fetchConstants.fetch("constant");
+    fetchUserTable.fetch(`user/table`);
+  }, [1]);
 
   useEffect(() => {
     if (fetchConstants.error) {

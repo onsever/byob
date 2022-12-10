@@ -31,16 +31,6 @@ const DrinkDescription = ({ navigation, route }) => {
             source={getDrinkImage(item.image)}
             style={tw`w-40 h-50 mb-5`}
           />
-          {/* <Image
-            style={{
-              width: 51,
-              height: 51,
-              resizeMode: "contain",
-            }}
-            source={{
-              uri: "data:image/png;base64," + base64Image,
-            }}
-          /> */}
 
           <Text style={tw`text-6 font-bold mb-2`}>{item.name}</Text>
         </View>

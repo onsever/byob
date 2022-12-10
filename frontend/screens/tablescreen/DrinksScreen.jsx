@@ -14,13 +14,20 @@ import { DrinkData } from "../../utils/DrinkData";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useFetch } from "../../hooks/useFetch";
 
-const Item = ({ title, price, guranteedPrice, currentPrice, onAction }) => (
-  <View style={tw`mt-3`}>
+const Item = ({
+  title,
+  price,
+  guranteedPrice,
+  currentPrice,
+  onAction,
+  _id,
+}) => (
+  <View style={tw`mt-3`} key={_id}>
     <TouchableOpacity style={tw`flex flex-row`} onPress={onAction}>
       <Text style={tw`font-thin w-40 `}>{title}</Text>
-      <Text style={tw`w-15 text-center`}>$ {price}</Text>
-      <Text style={tw`w-15 text-center`}>$ {guranteedPrice}</Text>
-      <Text style={tw`w-15 text-center`}>$ {currentPrice}</Text>
+      <Text style={tw`w-15 text-center`}>${price}</Text>
+      <Text style={tw`w-15 text-center`}>${guranteedPrice}</Text>
+      <Text style={tw`w-15 text-center`}>${currentPrice}</Text>
     </TouchableOpacity>
   </View>
 );
