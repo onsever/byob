@@ -5,26 +5,51 @@ import {
   SafeAreaView,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import React, { useState } from "react";
 import tw from "twrnc";
 import { Picker } from "@react-native-picker/picker";
 import { getDrinkImage } from "../../utils/DrinkData";
+import { usePost } from "../../hooks/usePost";
+import { useDispatch, useSelector } from "react-redux";
+import { selectOrder, storeOrder } from "../../redux/features/authSlice";
 
 const DrinkDescription = ({ navigation, route }) => {
-  const { item, title } = route.params;
+  const { item, title, goBack } = route.params;
   const [drinkOrder, setDrinkOrder] = useState({
     drinkId: item._id,
-    price: null,
+    price: item.currentPrice,
     quantity: "1",
     name: item.name,
   });
+
+  const { post, loading, loaded, result, error } = usePost();
+  const dispatch = useDispatch();
+  const order = useSelector(selectOrder);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
       title: title,
     });
   }, []);
+
+  React.useEffect(() => {
+    if (error) {
+      console.log("Error on drink bidding", error);
+      Alert.alert("Bid Failed", error.data || error);
+    }
+
+    if (result) {
+      // dispatch(storeOrder({...order, drinkOrder: [order.drinkOrder]}))
+      Alert.alert(
+        "Congratulations",
+        "Your bid has been accepted. Your drink will be served to you in a while."
+      );
+      goBack();
+      navigation.goBack();
+    }
+  }, [loaded]);
 
   return (
     <SafeAreaView style={tw`w-full h-full`}>
@@ -35,6 +60,11 @@ const DrinkDescription = ({ navigation, route }) => {
             style={tw`w-40 h-50 mb-5`}
           />
 
+          <Text style={tw`text-6 font-bold mb-2`}>{item.name}</Text>
+        </View>
+
+        <View style={tw`flex flex-row items-end justify-around`}>
+          <Text style={tw`font-bold text-4`}>Price</Text>
           <TextInput
             style={tw`h-10 border-b-2 border-[#C5C5C5] w-50`}
             value={drinkOrder.price}
@@ -42,11 +72,6 @@ const DrinkDescription = ({ navigation, route }) => {
               setDrinkOrder({ ...drinkOrder, price: text })
             }
           />
-        </View>
-
-        <View style={tw`flex flex-row items-end justify-around`}>
-          <Text style={tw`font-bold text-4`}>Price</Text>
-          <TextInput style={tw`h-10 border-b-2 border-[#C5C5C5] w-50`} />
         </View>
         <View style={tw`flex flex-row items-center justify-around mb-2`}>
           <Text style={tw`font-bold text-4`}>Qnty</Text>
@@ -68,6 +93,7 @@ const DrinkDescription = ({ navigation, route }) => {
           style={tw`flex items-center`}
           onPress={() => {
             console.log("drink order", drinkOrder);
+            post("order/drink", drinkOrder);
           }}
         >
           <Image
