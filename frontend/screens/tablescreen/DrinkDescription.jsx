@@ -9,6 +9,7 @@ import {
 import React, { useState } from "react";
 import tw from "twrnc";
 import { Picker } from "@react-native-picker/picker";
+import { getDrinkImage } from "../../utils/DrinkData";
 
 const DrinkDescription = ({ navigation, route }) => {
   const { item, title } = route.params;
@@ -24,7 +25,11 @@ const DrinkDescription = ({ navigation, route }) => {
     <SafeAreaView style={tw`w-full h-full`}>
       <View style={tw`mx-10 my-5 flex`}>
         <View style={tw`flex items-center`}>
-          <Image source={item.image} style={tw`w-40 h-50 mb-5`} />
+          <Image
+            source={getDrinkImage(item.image)}
+            style={tw`w-40 h-50 mb-5`}
+          />
+
           <Text style={tw`text-6 font-bold mb-2`}>{item.name}</Text>
         </View>
 

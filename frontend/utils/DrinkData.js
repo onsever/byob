@@ -1,3 +1,42 @@
+export const getDrinkImage = (name) => {
+  switch (name.toLowerCase()) {
+    case "Airen".toLowerCase():
+      return require("../assets/drinks/Airen.png");
+    case "BudLight".toLowerCase():
+      return require("../assets/drinks/BudLight.png");
+    case "CabernetSauvignon".toLowerCase():
+      return require("../assets/drinks/CabernetSauvignon.png");
+    case "CoronaExtra".toLowerCase():
+      return require("../assets/drinks/CoronaExtra.png");
+    case "DryMartini".toLowerCase():
+      return require("../assets/drinks/DryMartini.png");
+    case "FianodiAvellino".toLowerCase():
+      return require("../assets/drinks/FianodiAvellino.png");
+    case "GreenLabel".toLowerCase():
+      return require("../assets/drinks/GreenLabel.png");
+    case "HeinekenLager".toLowerCase():
+      return require("../assets/drinks/HeinekenLager.png");
+    case "JD".toLowerCase():
+      return require("../assets/drinks/JD.png");
+    case "legent".toLowerCase():
+      return require("../assets/drinks/legent.png");
+    case "Longbranch".toLowerCase():
+      return require("../assets/drinks/Longbranch.png");
+    case "manhattan".toLowerCase():
+      return require("../assets/drinks/manhattan.png");
+    case "margarita".toLowerCase():
+      return require("../assets/drinks/margarita.png");
+    case "Merlot".toLowerCase():
+      return require("../assets/drinks/Merlot.png");
+    case "Old-Fashioned".toLowerCase():
+      return require("../assets/drinks/Old-Fashioned.png");
+    case "StellaArtois".toLowerCase():
+      return require("../assets/drinks/StellaArtois.png");
+    default:
+      return require("../assets/drinks/Old-Fashioned.png");
+  }
+};
+
 export const DrinkData = [
   {
     title: "Cocktail",

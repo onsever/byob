@@ -24,9 +24,9 @@ export default function HomeScreen({ navigation }) {
   const reserveTable = usePost();
 
   useEffect(() => {
-    if (!fetchConstants.loading) fetchConstants.fetch("constant");
-    if (!fetchUserTable.loading) fetchUserTable.fetch(`user/table`);
-  }, []);
+    fetchConstants.fetch("constant");
+    fetchUserTable.fetch(`user/table`);
+  }, [1]);
 
   useEffect(() => {
     if (fetchConstants.error) {
@@ -47,7 +47,16 @@ export default function HomeScreen({ navigation }) {
 
     if (fetchUserTable.result) {
       if (fetchUserTable.result.order) {
-        dispatch(storeOrder(fetchUserTable.result.order));
+        dispatch(
+          storeOrder({
+            ...fetchUserTable.result.order,
+            order: fetchUserTable.result.order.order?.map((x) => {
+              x.orderPlaced = true;
+              x.orderPlacedQty = x.quantity;
+              return x;
+            }),
+          })
+        );
       }
       navigation.replace("Tablescreen");
     }

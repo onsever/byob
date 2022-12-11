@@ -6,30 +6,48 @@ import {
   SectionList,
   StatusBar,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import tw from "twrnc";
 import { DrinkData } from "../../utils/DrinkData";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { useFetch } from "../../hooks/useFetch";
 
 const Item = ({
-  name,
-  marketPrice,
-  guaranteedPrice,
+  title,
+  price,
+  guranteedPrice,
   currentPrice,
   onAction,
+  _id,
 }) => (
-  <View style={tw`mt-3`}>
+  <View style={tw`mt-3`} key={_id}>
     <TouchableOpacity style={tw`flex flex-row`} onPress={onAction}>
-      <Text style={tw`font-thin w-40 `}>{name}</Text>
-      <Text style={tw`w-15 text-center`}>$ {marketPrice}</Text>
-      <Text style={tw`w-15 text-center`}>$ {guaranteedPrice}</Text>
-      <Text style={tw`w-15 text-center`}>$ {currentPrice}</Text>
+      <Text style={tw`font-thin w-40 `}>{title}</Text>
+      <Text style={tw`w-15 text-center`}>${price}</Text>
+      <Text style={tw`w-15 text-center`}>${guranteedPrice}</Text>
+      <Text style={tw`w-15 text-center`}>${currentPrice}</Text>
     </TouchableOpacity>
   </View>
 );
 const DrinksScreen = ({ navigation }) => {
   const [label, setLabel] = React.useState(null);
+  const [drinkData, setDrinkData] = useState([]);
+  const { fetch, loading, loaded, result, error } = useFetch();
+
+  useEffect(() => {
+    fetch("menu/drink");
+  }, []);
+
+  useEffect(() => {
+    if (error) {
+      console.log("Error in getting drinks", error);
+    }
+    if (result) {
+      setDrinkData(result);
+    }
+  }, [loaded]);
 
   const labelHandler = (str) => {
     switch (str) {
@@ -84,27 +102,31 @@ const DrinksScreen = ({ navigation }) => {
         )}
       </View>
 
-      <SectionList
-        style={tw`mx-5 mb-5`}
-        sections={DrinkData}
-        keyExtractor={(item, index) => item + index}
-        renderItem={({ item, section }) => (
-          <Item
-            {...item}
-            onAction={() => {
-              navigation.navigate("DrinkDescription", {
-                item: item,
-                title: section.title,
-              });
-            }}
-          />
-        )}
-        renderSectionHeader={({ section: { title } }) => (
-          <View style={tw`border-b-2 border-[#640100] w-full pb-3 my-3`}>
-            <Text style={tw`font-semibold text-5 `}>{title}</Text>
-          </View>
-        )}
-      />
+      {loading ? (
+        <ActivityIndicator />
+      ) : (
+        <SectionList
+          style={tw`mx-5 mb-5`}
+          sections={drinkData}
+          keyExtractor={(item, index) => item + index}
+          renderItem={({ item, section }) => (
+            <Item
+              {...item}
+              onAction={() => {
+                navigation.navigate("DrinkDescription", {
+                  item: item,
+                  title: section.title,
+                });
+              }}
+            />
+          )}
+          renderSectionHeader={({ section: { title } }) => (
+            <View style={tw`border-b-2 border-[#640100] w-full pb-3 my-3`}>
+              <Text style={tw`font-semibold text-5 `}>{title}</Text>
+            </View>
+          )}
+        />
+      )}
     </SafeAreaView>
   );
 };
