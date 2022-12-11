@@ -5,11 +5,14 @@ import {
   FlatList,
   TouchableOpacity,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import tw from "twrnc";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useFetch } from "../../hooks/useFetch";
+import { useDispatch, useSelector } from "react-redux";
+import { selectOrder, storeOrder } from "../../redux/features/authSlice";
 
 const Item = ({
   image,
@@ -19,10 +22,8 @@ const Item = ({
   onIncrease,
   onDecrease,
   onAdd,
-  _id,
 }) => (
   <View
-    key={_id}
     style={tw`flex flex-row bg-[#F9F9F9] px-5 py-7 justify-center items-center`}
   >
     <View style={tw`w-20`}>
@@ -60,9 +61,11 @@ const Item = ({
 );
 
 const FoodScreen = ({ navigation }) => {
+  const dispatch = useDispatch();
   const [foodData, setFoodData] = useState([]);
   const [cart, setCart] = useState([]);
   const { fetch, loading, loaded, result, error } = useFetch();
+  const order = useSelector(selectOrder);
 
   useEffect(() => {
     fetchMenu();
@@ -79,23 +82,47 @@ const FoodScreen = ({ navigation }) => {
 
     if (result) {
       setFoodData(
-        result.map((x) => {
-          return { ...x, quantity: 0 };
+        result.map((item) => {
+          let quantity = 0;
+          let orderPlaced = false;
+          let orderPlacedQty = 0;
+          if (
+            order?.order?.length &&
+            order.order.some((x) => x.foodId === item._id)
+          ) {
+            let food = order.order.find((x) => x.foodId === item._id);
+            quantity = food.quantity;
+            orderPlaced = food.orderPlaced;
+            orderPlacedQty = food.orderPlacedQty;
+          }
+          return {
+            foodId: item._id,
+            price: item.price,
+            quantity: quantity,
+            name: item.title,
+            image: item.image,
+            orderPlaced: orderPlaced,
+            orderPlacedQty: orderPlacedQty,
+          };
         })
       );
     }
-  }, [loaded]);
+
+    if (order) {
+      setCart(order.order || []);
+    }
+  }, [loaded, order]);
 
   const renderItem = ({ item }) => (
     <Item
-      title={item.title}
+      title={item.name}
       image={item.image}
       price={`$ ${item.price}`}
       quantity={item.quantity}
       onIncrease={() => {
         setFoodData(
           foodData.map((x) => {
-            if (x._id === item._id) {
+            if (x.foodId === item.foodId) {
               x.quantity += 1;
             }
             return x;
@@ -103,34 +130,29 @@ const FoodScreen = ({ navigation }) => {
         );
       }}
       onDecrease={() => {
-        setFoodData(
-          foodData.map((x) => {
-            if (x._id === item._id) {
-              x.quantity -= 1;
-            }
-            return x;
-          })
-        );
+        if (item.orderPlaced && item.quantity - 1 < item.orderPlacedQty)
+          Alert.alert(
+            "Already Ordered",
+            "This item has already been ordered, Please consult a server if you want to decrese the quantity."
+          );
+        else
+          setFoodData(
+            foodData.map((x) => {
+              if (x.foodId === item.foodId) {
+                x.quantity -= 1;
+              }
+              return x;
+            })
+          );
       }}
       onAdd={() => {
         let tempCart = [...cart];
-        if (tempCart.length && tempCart.some((x) => x.foodId === item._id)) {
-          tempCart = tempCart.map((x) => {
-            if (x.foodId === item._id) {
-              x.quantity = item.quantity;
-            }
-          });
-          setCart(tempCart);
+        if (tempCart.length && tempCart.some((x) => x.foodId === item.foodId)) {
+          tempCart = tempCart.filter((x) => x.foodId !== item.foodId);
+          tempCart.push(item);
+          dispatch(storeOrder({ ...order, order: tempCart }));
         } else {
-          setCart([
-            ...cart,
-            {
-              foodId: item._id,
-              price: item.price,
-              quantity: item.quantity,
-              name: item.title,
-            },
-          ]);
+          dispatch(storeOrder({ ...order, order: [...cart, item] }));
         }
       }}
     />
@@ -143,12 +165,12 @@ const FoodScreen = ({ navigation }) => {
         <FlatList
           data={foodData}
           renderItem={renderItem}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(_, index) => index}
         />
       )}
       <TouchableOpacity
         style={tw`bg-[#640100] m-3 p-3 rounded-lg`}
-        onPress={() => navigation.navigate("CartScreen", { cart })}
+        onPress={() => navigation.navigate("CartScreen")}
       >
         <Text style={tw`text-center text-white text-4`}>
           View Cart ({cart.length})

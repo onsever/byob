@@ -47,7 +47,16 @@ export default function HomeScreen({ navigation }) {
 
     if (fetchUserTable.result) {
       if (fetchUserTable.result.order) {
-        dispatch(storeOrder(fetchUserTable.result.order));
+        dispatch(
+          storeOrder({
+            ...fetchUserTable.result.order,
+            order: fetchUserTable.result.order.order?.map((x) => {
+              x.orderPlaced = true;
+              x.orderPlacedQty = x.quantity;
+              return x;
+            }),
+          })
+        );
       }
       navigation.replace("Tablescreen");
     }

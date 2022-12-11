@@ -14,8 +14,6 @@ import { getDrinkImage } from "../../utils/DrinkData";
 const DrinkDescription = ({ navigation, route }) => {
   const { item, title } = route.params;
   const [selectedQty, setSelectedQty] = useState();
-  console.log("item.image", item.image);
-  const [base64Image, setBase64Image] = useState(item.image);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
