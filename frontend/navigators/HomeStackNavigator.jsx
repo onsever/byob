@@ -8,7 +8,7 @@ const Stack = createNativeStackNavigator();
 
 const HomeStackNavigator = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{ headerBackTitle: "" }}>
       <Stack.Group>
         <Stack.Screen
           name="Select a Table"

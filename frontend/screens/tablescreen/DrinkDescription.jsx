@@ -13,7 +13,12 @@ import { getDrinkImage } from "../../utils/DrinkData";
 
 const DrinkDescription = ({ navigation, route }) => {
   const { item, title } = route.params;
-  const [selectedQty, setSelectedQty] = useState();
+  const [drinkOrder, setDrinkOrder] = useState({
+    drinkId: item._id,
+    price: null,
+    quantity: "1",
+    name: item.name,
+  });
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -30,7 +35,13 @@ const DrinkDescription = ({ navigation, route }) => {
             style={tw`w-40 h-50 mb-5`}
           />
 
-          <Text style={tw`text-6 font-bold mb-2`}>{item.name}</Text>
+          <TextInput
+            style={tw`h-10 border-b-2 border-[#C5C5C5] w-50`}
+            value={drinkOrder.price}
+            onChangeText={(text) =>
+              setDrinkOrder({ ...drinkOrder, price: text })
+            }
+          />
         </View>
 
         <View style={tw`flex flex-row items-end justify-around`}>
@@ -40,8 +51,10 @@ const DrinkDescription = ({ navigation, route }) => {
         <View style={tw`flex flex-row items-center justify-around mb-2`}>
           <Text style={tw`font-bold text-4`}>Qnty</Text>
           <Picker
-            selectedValue={selectedQty}
-            onValueChange={(itemValue, itemIndex) => setSelectedQty(itemValue)}
+            selectedValue={drinkOrder.quantity}
+            onValueChange={(itemValue) =>
+              setDrinkOrder({ ...drinkOrder, quantity: itemValue })
+            }
             style={tw`w-50`}
           >
             <Picker.Item label="1" value="1" />
@@ -51,7 +64,12 @@ const DrinkDescription = ({ navigation, route }) => {
             <Picker.Item label="5" value="5" />
           </Picker>
         </View>
-        <TouchableOpacity style={tw`flex items-center`}>
+        <TouchableOpacity
+          style={tw`flex items-center`}
+          onPress={() => {
+            console.log("drink order", drinkOrder);
+          }}
+        >
           <Image
             source={require("../../assets/bid.png")}
             style={tw`w-30 h-30 mb-5`}
