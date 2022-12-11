@@ -4,7 +4,7 @@ import {
   Image,
   FlatList,
   TouchableOpacity,
-  ActivityIndicator,
+  RefreshControl,
   Alert,
 } from "react-native";
 import React, { useEffect, useState } from "react";
@@ -159,15 +159,14 @@ const FoodScreen = ({ navigation }) => {
   );
   return (
     <View style={tw`flex-1 bg-[#F9F9F9]`}>
-      {loading ? (
-        <ActivityIndicator />
-      ) : (
-        <FlatList
-          data={foodData}
-          renderItem={renderItem}
-          keyExtractor={(_, index) => index}
-        />
-      )}
+      <FlatList
+        data={foodData}
+        renderItem={renderItem}
+        keyExtractor={(_, index) => index}
+        refreshControl={
+          <RefreshControl refreshing={loading} onRefresh={fetchMenu} />
+        }
+      />
       <TouchableOpacity
         style={tw`bg-[#640100] m-3 p-3 rounded-lg`}
         onPress={() => navigation.navigate("CartScreen")}

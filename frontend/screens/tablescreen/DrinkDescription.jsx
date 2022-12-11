@@ -1,65 +1,137 @@
 import {
-  View,
+  StyleSheet,
   Text,
-  Image,
+  View,
   SafeAreaView,
-  TextInput,
+  SectionList,
+  RefreshControl,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import tw from "twrnc";
-import { Picker } from "@react-native-picker/picker";
-import { getDrinkImage } from "../../utils/DrinkData";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { useFetch } from "../../hooks/useFetch";
 
-const DrinkDescription = ({ navigation, route }) => {
-  const { item, title } = route.params;
-  const [selectedQty, setSelectedQty] = useState();
+const Item = ({
+  title,
+  price,
+  guranteedPrice,
+  currentPrice,
+  onAction,
+  _id,
+}) => (
+  <View style={tw`mt-3`} key={_id}>
+    <TouchableOpacity style={tw`flex flex-row`} onPress={onAction}>
+      <Text style={tw`font-thin w-40 `}>{title}</Text>
+      <Text style={tw`w-15 text-center`}>${price}</Text>
+      <Text style={tw`w-15 text-center`}>${guranteedPrice}</Text>
+      <Text style={tw`w-15 text-center`}>${currentPrice}</Text>
+    </TouchableOpacity>
+  </View>
+);
+const DrinksScreen = ({ navigation }) => {
+  const [label, setLabel] = React.useState(null);
+  const [drinkData, setDrinkData] = useState([]);
+  const { fetch, loading, loaded, result, error } = useFetch();
 
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      title: title,
-    });
+  useEffect(() => {
+    fetch("menu/drink");
   }, []);
 
+  useEffect(() => {
+    if (error) {
+      console.log("Error in getting drinks", error);
+    }
+    if (result) {
+      setDrinkData(result);
+    }
+  }, [loaded]);
+
+  const labelHandler = (str) => {
+    switch (str) {
+      case "MP":
+        setLabel("Market Price");
+        break;
+      case "GP":
+        setLabel("Guaranteed Price");
+        break;
+      case "CP":
+        setLabel("Current Price");
+        break;
+      default:
+        break;
+    }
+
+    setTimeout(() => {
+      setLabel(null);
+    }, 2000);
+  };
+
+  const handleBack = () => {
+    fetch("menu/drink");
+  };
+
   return (
-    <SafeAreaView style={tw`w-full h-full`}>
-      <View style={tw`mx-10 my-5 flex`}>
-        <View style={tw`flex items-center`}>
-          <Image
-            source={getDrinkImage(item.image)}
-            style={tw`w-40 h-50 mb-5`}
-          />
-
-          <Text style={tw`text-6 font-bold mb-2`}>{item.name}</Text>
-        </View>
-
-        <View style={tw`flex flex-row items-end justify-around`}>
-          <Text style={tw`font-bold text-4`}>Price</Text>
-          <TextInput style={tw`h-10 border-b-2 border-[#C5C5C5] w-50`} />
-        </View>
-        <View style={tw`flex flex-row items-center justify-around mb-2`}>
-          <Text style={tw`font-bold text-4`}>Qnty</Text>
-          <Picker
-            selectedValue={selectedQty}
-            onValueChange={(itemValue, itemIndex) => setSelectedQty(itemValue)}
-            style={tw`w-50`}
-          >
-            <Picker.Item label="1" value="1" />
-            <Picker.Item label="2" value="2" />
-            <Picker.Item label="3" value="3" />
-            <Picker.Item label="4" value="4" />
-            <Picker.Item label="5" value="5" />
-          </Picker>
-        </View>
-        <TouchableOpacity style={tw`flex items-center`}>
-          <Image
-            source={require("../../assets/bid.png")}
-            style={tw`w-30 h-30 mb-5`}
-          />
-        </TouchableOpacity>
+    <SafeAreaView style={tw`flex-1`}>
+      <View style={tw`flex flex-row bg-[#F9F9F9] p-5 items-center`}>
+        <Text style={tw`font-bold w-40 text-6`}>Drinks </Text>
+        {label ? (
+          <Text style={tw`font-bold text-center`}>{label}</Text>
+        ) : (
+          <>
+            <TouchableOpacity
+              style={tw`flex flex-row items-center w-15`}
+              onPress={() => labelHandler("MP")}
+            >
+              <Text style={tw`font-bold `}>MP</Text>
+              <Ionicons name="information-circle" size={20} color="#640100" />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={tw`flex flex-row items-center w-15`}
+              onPress={() => labelHandler("GP")}
+            >
+              <Text style={tw`font-bold`}>GP</Text>
+              <Ionicons name="information-circle" size={20} color="#640100" />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={tw`flex flex-row items-center w-15`}
+              onPress={() => labelHandler("CP")}
+            >
+              <Text style={tw`font-bold`}>CP</Text>
+              <Ionicons name="information-circle" size={20} color="#640100" />
+            </TouchableOpacity>
+          </>
+        )}
       </View>
+
+      <SectionList
+        style={tw`mx-5 mb-5`}
+        sections={drinkData}
+        keyExtractor={(item, index) => item + index}
+        refreshControl={
+          <RefreshControl refreshing={loading} onRefresh={handleBack} />
+        }
+        renderItem={({ item, section }) => (
+          <Item
+            {...item}
+            onAction={() => {
+              navigation.navigate("DrinkDescription", {
+                item: item,
+                title: section.title,
+                goBack: handleBack,
+              });
+            }}
+          />
+        )}
+        renderSectionHeader={({ section: { title } }) => (
+          <View style={tw`border-b-2 border-[#640100] w-full pb-3 my-3`}>
+            <Text style={tw`font-semibold text-5 `}>{title}</Text>
+          </View>
+        )}
+      />
     </SafeAreaView>
   );
 };
 
-export default DrinkDescription;
+export default DrinksScreen;

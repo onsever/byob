@@ -32,9 +32,11 @@
     "firebase": "8.10.0",
     "formik": "^2.2.9",
     "fs": "^0.0.1-security",
+    "moment": "^2.29.4",
     "react": "18.1.0",
     "react-native": "0.70.5",
     "react-native-gesture-handler": "^2.8.0",
+    "react-native-pager-view": "6.0.1",
     "react-native-reanimated": "^2.13.0",
     "react-native-safe-area-context": "4.4.1",
     "react-native-screens": "~3.18.0",
@@ -45,8 +47,7 @@
     "react-redux": "^8.0.5",
     "react-uuid": "^2.0.0",
     "twrnc": "^3.4.1",
-    "yup": "^0.32.11",
-    "react-native-pager-view": "6.0.1"
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

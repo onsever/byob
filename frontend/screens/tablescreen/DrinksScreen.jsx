@@ -10,7 +10,6 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import tw from "twrnc";
-import { DrinkData } from "../../utils/DrinkData";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useFetch } from "../../hooks/useFetch";
 
@@ -69,6 +68,10 @@ const DrinksScreen = ({ navigation }) => {
     }, 2000);
   };
 
+  const handleBack = () => {
+    fetch("menu/drink");
+  };
+
   return (
     <SafeAreaView style={tw`flex-1`}>
       <View style={tw`flex flex-row bg-[#F9F9F9] p-5 items-center`}>
@@ -116,6 +119,7 @@ const DrinksScreen = ({ navigation }) => {
                 navigation.navigate("DrinkDescription", {
                   item: item,
                   title: section.title,
+                  goBack: handleBack,
                 });
               }}
             />
