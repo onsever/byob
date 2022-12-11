@@ -4,7 +4,7 @@ import React from "react";
 import tw from "twrnc";
 import { Audio } from "expo-av";
 import { useDispatch } from "react-redux";
-import { login } from "../../redux/features/authSlice";
+import { login, openApp } from "../../redux/features/authSlice";
 import { getData } from "../../utils/asyncStorage";
 
 export default function OnBoardingScreen({ navigation }) {
@@ -19,7 +19,9 @@ export default function OnBoardingScreen({ navigation }) {
       }
       navigate(user);
     }
-    fetchData();
+    setTimeout(() => {
+      fetchData();
+    }, 2500);
   }, []);
 
   async function playSound() {
@@ -35,9 +37,9 @@ export default function OnBoardingScreen({ navigation }) {
   React.useEffect(() => {
     return sound
       ? () => {
-          console.log("Unloading Sound");
-          sound.unloadAsync();
-        }
+        console.log("Unloading Sound");
+        sound.unloadAsync();
+      }
       : undefined;
   }, [sound]);
 
@@ -49,6 +51,7 @@ export default function OnBoardingScreen({ navigation }) {
   const navigate = (userLoggedIn) => {
     if (userLoggedIn) navigation.replace("Tab");
     else navigation.navigate("Auth");
+    dispatch(openApp());
   };
 
   return (

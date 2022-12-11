@@ -60,6 +60,7 @@ export default function LoginScreen({ navigation }) {
       } else if (result) {
         let data = result.data;
         dispatch(login(data));
+        navigation.replace("Tab");
       }
     }
   }, [loaded]);

@@ -13,7 +13,7 @@ import { logout } from "../../redux/features/authSlice";
 import { getData } from "../../utils/asyncStorage";
 import moment from "moment";
 
-export default function ProfileScreen() {
+export default function ProfileScreen({ navigation }) {
   const dispatch = useDispatch();
   const [user, setUser] = useState();
 
@@ -47,6 +47,7 @@ export default function ProfileScreen() {
         style={tw`flex flex-row justify-center items-center`}
         onPress={() => {
           dispatch(logout());
+          navigation.replace("Auth");
         }}
       >
         <Image source={require("../../assets/wine_glass.png")} />
