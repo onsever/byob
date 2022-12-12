@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "../screens/home/HomeScreen";
-import TableScreen from "../screens/tablescreen/TableScreen";
+import TableScreen from "../screens/tablescreen/tablescreen";
 import DrinkDescription from "../screens/tablescreen/DrinkDescription";
 import CartScreen from "../screens/cart/CartScreen";
 
