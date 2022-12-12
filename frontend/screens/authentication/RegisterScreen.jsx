@@ -38,7 +38,8 @@ export default function RegisterScreen({ navigation }) {
 
   useEffect(() => {
     if (response) {
-      setAccessToken(response.authentication.accessToken);
+      if (response.authentication)
+        setAccessToken(response.authentication.accessToken);
     }
   }, [response]);
 

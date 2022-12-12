@@ -67,7 +67,9 @@ export default function LoginScreen({ navigation }) {
 
   useEffect(() => {
     if (response) {
-      setAccessToken(response.authentication.accessToken);
+      if (response.authentication) {
+        setAccessToken(response.authentication.accessToken);
+      }
     }
   }, [response]);
 
@@ -97,7 +99,9 @@ export default function LoginScreen({ navigation }) {
     } 
       */
       post("auth/user/login", { ...data, isGoogleSignIn: true });
-    });
+    }).catch(e => {
+      console.log("error", e);
+    })``;
   };
 
   return (

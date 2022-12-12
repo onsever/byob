@@ -146,13 +146,15 @@ const FoodScreen = ({ navigation }) => {
           );
       }}
       onAdd={() => {
-        let tempCart = [...cart];
-        if (tempCart.length && tempCart.some((x) => x.foodId === item.foodId)) {
-          tempCart = tempCart.filter((x) => x.foodId !== item.foodId);
-          tempCart.push(item);
-          dispatch(storeOrder({ ...order, order: tempCart }));
-        } else {
-          dispatch(storeOrder({ ...order, order: [...cart, item] }));
+        if (item.quantity > 0) {
+          let tempCart = [...cart];
+          if (tempCart.length && tempCart.some((x) => x.foodId === item.foodId)) {
+            tempCart = tempCart.filter((x) => x.foodId !== item.foodId);
+            tempCart.push(item);
+            dispatch(storeOrder({ ...order, order: tempCart }));
+          } else {
+            dispatch(storeOrder({ ...order, order: [...cart, item] }));
+          }
         }
       }}
     />

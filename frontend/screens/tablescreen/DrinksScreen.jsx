@@ -4,7 +4,7 @@ import {
   View,
   SafeAreaView,
   SectionList,
-  StatusBar,
+  RefreshControl,
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
@@ -105,32 +105,31 @@ const DrinksScreen = ({ navigation }) => {
         )}
       </View>
 
-      {loading ? (
-        <ActivityIndicator />
-      ) : (
-        <SectionList
-          style={tw`mx-5 mb-5`}
-          sections={drinkData}
-          keyExtractor={(item, index) => item + index}
-          renderItem={({ item, section }) => (
-            <Item
-              {...item}
-              onAction={() => {
-                navigation.navigate("DrinkDescription", {
-                  item: item,
-                  title: section.title,
-                  goBack: handleBack,
-                });
-              }}
-            />
-          )}
-          renderSectionHeader={({ section: { title } }) => (
-            <View style={tw`border-b-2 border-[#640100] w-full pb-3 my-3`}>
-              <Text style={tw`font-semibold text-5 `}>{title}</Text>
-            </View>
-          )}
-        />
-      )}
+      <SectionList
+        style={tw`mx-5 mb-5`}
+        sections={drinkData}
+        keyExtractor={(item, index) => item + index}
+        refreshControl={
+          <RefreshControl refreshing={loading} onRefresh={handleBack} />
+        }
+        renderItem={({ item, section }) => (
+          <Item
+            {...item}
+            onAction={() => {
+              navigation.navigate("DrinkDescription", {
+                item: item,
+                title: section.title,
+                goBack: handleBack,
+              });
+            }}
+          />
+        )}
+        renderSectionHeader={({ section: { title } }) => (
+          <View style={tw`border-b-2 border-[#640100] w-full pb-3 my-3`}>
+            <Text style={tw`font-semibold text-5 `}>{title}</Text>
+          </View>
+        )}
+      />
     </SafeAreaView>
   );
 };
