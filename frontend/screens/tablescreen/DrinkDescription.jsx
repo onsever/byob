@@ -21,7 +21,7 @@ const DrinkDescription = ({ navigation, route }) => {
     drinkId: item._id,
     price: item.currentPrice,
     quantity: "1",
-    name: item.name,
+    name: item.title,
   });
 
   const { post, loading, loaded, result, error } = usePost();
