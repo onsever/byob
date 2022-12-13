@@ -26,6 +26,7 @@ export default function VerificationScreen({ route, navigation }) {
     if (isUserVerified) {
       let data = result.data;
       dispatch(login(data));
+      navigation.replace("Tab");
     } else {
       navigation.replace("Login");
     }

@@ -1,4 +1,7 @@
 export const getDrinkImage = (name) => {
+  if (!name) {
+    return require("../assets/drinks/Old-Fashioned.png");
+  }
   switch (name.toLowerCase()) {
     case "Airen".toLowerCase():
       return require("../assets/drinks/Airen.png");
