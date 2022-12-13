@@ -10,10 +10,7 @@ const HomeStackNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{ headerBackTitle: "" }}>
       <Stack.Group>
-        <Stack.Screen
-          name="Select a Table"
-          component={HomeScreen}
-        />
+        <Stack.Screen name="Select a Table" component={HomeScreen} />
         <Stack.Screen name="Tablescreen" component={TableScreen} />
         <Stack.Screen name="DrinkDescription" component={DrinkDescription} />
         <Stack.Screen name="CartScreen" component={CartScreen} />
