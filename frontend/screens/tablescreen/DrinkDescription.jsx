@@ -13,7 +13,7 @@ import { Picker } from "@react-native-picker/picker";
 import { getDrinkImage } from "../../utils/DrinkData";
 import { usePost } from "../../hooks/usePost";
 import { useDispatch, useSelector } from "react-redux";
-import { selectOrder, storeOrder } from "../../redux/features/authSlice";
+import { selectOrder } from "../../redux/features/authSlice";
 
 const DrinkDescription = ({ navigation, route }) => {
   const { item, title, goBack } = route.params;
@@ -41,7 +41,6 @@ const DrinkDescription = ({ navigation, route }) => {
     }
 
     if (result) {
-      // dispatch(storeOrder({...order, drinkOrder: [order.drinkOrder]}))
       Alert.alert(
         "Congratulations",
         "Your bid has been accepted. Your drink will be served to you in a while."

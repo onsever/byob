@@ -86,15 +86,19 @@ const FoodScreen = ({ navigation }) => {
           let quantity = 0;
           let orderPlaced = false;
           let orderPlacedQty = 0;
-          if (
-            order?.order?.length &&
-            order.order.some((x) => x.foodId === item._id)
-          ) {
-            let food = order.order.find((x) => x.foodId === item._id);
+          if (cart.length && cart.some((x) => x.foodId === item._id)) {
+            let food = cart.find((x) => x.foodId === item._id);
             quantity = food.quantity;
-            orderPlaced = food.orderPlaced;
-            orderPlacedQty = food.orderPlacedQty;
           }
+          // if (
+          //   order?.order?.length &&
+          //   order.order.some((x) => x.foodId === item._id)
+          // ) {
+          // let food = order.order.find((x) => x.foodId === item._id);
+          // quantity = food.quantity;
+          // orderPlaced = food.orderPlaced;
+          // orderPlacedQty = food.orderPlacedQty;
+          // }
           return {
             foodId: item._id,
             price: item.price,
@@ -108,10 +112,15 @@ const FoodScreen = ({ navigation }) => {
       );
     }
 
-    if (order) {
-      setCart(order.order || []);
-    }
+    // if (order) {
+    //   setCart(order.order || []);
+    // }
   }, [loaded, order]);
+
+  const goBackHandler = () => {
+    fetchMenu();
+    setCart([]);
+  };
 
   const renderItem = ({ item }) => (
     <Item
@@ -138,7 +147,7 @@ const FoodScreen = ({ navigation }) => {
         else
           setFoodData(
             foodData.map((x) => {
-              if (x.foodId === item.foodId) {
+              if (x.foodId === item.foodId && x.quantity > 0) {
                 x.quantity -= 1;
               }
               return x;
@@ -148,13 +157,20 @@ const FoodScreen = ({ navigation }) => {
       onAdd={() => {
         if (item.quantity > 0) {
           let tempCart = [...cart];
-          if (tempCart.length && tempCart.some((x) => x.foodId === item.foodId)) {
+          if (
+            tempCart.length &&
+            tempCart.some((x) => x.foodId === item.foodId)
+          ) {
             tempCart = tempCart.filter((x) => x.foodId !== item.foodId);
             tempCart.push(item);
-            dispatch(storeOrder({ ...order, order: tempCart }));
+            setCart(tempCart);
+            // dispatch(storeOrder({ ...order, order: tempCart }));
           } else {
-            dispatch(storeOrder({ ...order, order: [...cart, item] }));
+            setCart([...cart, item]);
+            // dispatch(storeOrder({ ...order, order: [...cart, item] }));
           }
+        } else {
+          setCart(cart.filter((x) => x.foodId !== item.foodId));
         }
       }}
     />
@@ -171,7 +187,12 @@ const FoodScreen = ({ navigation }) => {
       />
       <TouchableOpacity
         style={tw`bg-[#640100] m-3 p-3 rounded-lg`}
-        onPress={() => navigation.navigate("CartScreen")}
+        onPress={() =>
+          navigation.navigate("CartScreen", {
+            cart: cart,
+            goBackHandler: goBackHandler,
+          })
+        }
       >
         <Text style={tw`text-center text-white text-4`}>
           View Cart ({cart.length})
