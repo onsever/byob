@@ -6,10 +6,12 @@ import {
   SectionList,
   Text,
   Image,
+  RefreshControl,
 } from "react-native";
 import { useFetch } from "../../hooks/useFetch";
 import tw from "twrnc";
 import moment from "moment";
+import { getDrinkImage } from "../../utils/DrinkData";
 
 export default function AccountOrderHistoryScreen({ navigation }) {
   const [data, setData] = React.useState(null);
@@ -48,7 +50,12 @@ export default function AccountOrderHistoryScreen({ navigation }) {
         ?.map((item) => {
           return {
             title: dateParser(item?.createdAt),
-            data: item?.order?.concat(item?.drinkOrder),
+            data: item?.order?.concat(
+              item?.drinkOrder.map((x) => {
+                x.isDrink = true;
+                return x;
+              })
+            ),
           };
         })
         .filter((i) => i?.data !== undefined)
@@ -68,6 +75,12 @@ export default function AccountOrderHistoryScreen({ navigation }) {
           <SectionList
             sections={tableData || []}
             keyExtractor={(item, index) => item + index}
+            refreshControl={
+              <RefreshControl
+                refreshing={loading}
+                onRefresh={() => fetch("table/all")}
+              />
+            }
             renderItem={({ item }) => {
               console.log(item);
               return (
@@ -75,11 +88,15 @@ export default function AccountOrderHistoryScreen({ navigation }) {
                   style={tw`flex-row items-center px-4 mb-4 bg-white shadow-md py-2`}
                 >
                   <Image
-                    source={{
-                      uri:
-                        item?.image ||
-                        "https://i.ytimg.com/vi/IVM_CQvgxCg/maxresdefault.jpg",
-                    }}
+                    source={
+                      item?.isDrink
+                        ? getDrinkImage(item?.image || "")
+                        : {
+                            uri:
+                              item?.image ||
+                              "https://i.ytimg.com/vi/IVM_CQvgxCg/maxresdefault.jpg",
+                          }
+                    }
                     style={tw`w-16 h-16 rounded-full`}
                   />
                   <View>

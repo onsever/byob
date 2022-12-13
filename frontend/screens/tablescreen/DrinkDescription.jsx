@@ -22,6 +22,7 @@ const DrinkDescription = ({ navigation, route }) => {
     price: item.currentPrice,
     quantity: "1",
     name: item.title,
+    image: item.image,
   });
 
   const { post, loading, loaded, result, error } = usePost();
