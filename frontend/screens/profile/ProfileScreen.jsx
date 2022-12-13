@@ -46,7 +46,14 @@ export default function ProfileScreen({ navigation }) {
       <View
         style={tw`flex flex-row bg-white px-10 py-7 justify-between mx-6 mb-2 rounded-lg shadow-md w-full`}
       >
-        <TouchableOpacity style={tw`flex flex-column items-center`}>
+        <TouchableOpacity
+          style={tw`flex flex-column items-center`}
+          onPress={() => {
+            navigation.navigate("AccountDetailsScreen", {
+              user: user,
+            });
+          }}
+        >
           <Image
             source={require("../../assets/viewAccount.png")}
             style={tw`w-7 h-7 mb-3`}
@@ -54,7 +61,12 @@ export default function ProfileScreen({ navigation }) {
           <Text>Your Account</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={tw`flex items-center`}>
+        <TouchableOpacity
+          style={tw`flex items-center`}
+          onPress={() => {
+            navigation.navigate("AccountOrderHistoryScreen");
+          }}
+        >
           <Image
             source={require("../../assets/orderHistory.png")}
             style={tw`w-7 h-7 mb-3`}
