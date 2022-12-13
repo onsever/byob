@@ -12,6 +12,7 @@ import tw from "twrnc";
 import { logout } from "../../redux/features/authSlice";
 import { getData } from "../../utils/asyncStorage";
 import moment from "moment";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 export default function ProfileScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -28,8 +29,40 @@ export default function ProfileScreen({ navigation }) {
   }, []);
 
   return (
-    <SafeAreaView>
-      <Text>ProfileScreen</Text>
+    <SafeAreaView style={tw`flex-1 justify-center items-center px-6 relative`}>
+      <TouchableOpacity>
+        <Ionicons name="person-circle" size={120} color="#640100" />
+      </TouchableOpacity>
+      {user ? (
+        <View style={tw`mb-5`}>
+          <Text style={tw`font-bold text-5`}>
+            {user.firstName} {user.lastName}
+          </Text>
+        </View>
+      ) : (
+        <ActivityIndicator />
+      )}
+
+      <View
+        style={tw`flex flex-row bg-white px-10 py-7 justify-between mx-6 mb-2 rounded-lg shadow-md w-full`}
+      >
+        <TouchableOpacity style={tw`flex flex-column items-center`}>
+          <Image
+            source={require("../../assets/viewAccount.png")}
+            style={tw`w-7 h-7 mb-3`}
+          />
+          <Text>Your Account</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={tw`flex items-center`}>
+          <Image
+            source={require("../../assets/orderHistory.png")}
+            style={tw`w-7 h-7 mb-3`}
+          />
+          <Text>Order History</Text>
+        </TouchableOpacity>
+      </View>
+
       {user ? (
         <View>
           <Text>
@@ -44,14 +77,13 @@ export default function ProfileScreen({ navigation }) {
       )}
 
       <TouchableOpacity
-        style={tw`flex flex-row justify-center items-center`}
+        style={tw` bg-[#640100] rounded-full p-4 absolute bottom-3 right-3`}
         onPress={() => {
           dispatch(logout());
           navigation.replace("Auth");
         }}
       >
-        <Image source={require("../../assets/wine_glass.png")} />
-        <Text style={tw`text-[#640100] ml-[-4%]`}>Log out</Text>
+        <Ionicons name="log-out-outline" size={30} color="#fff" />
       </TouchableOpacity>
     </SafeAreaView>
   );
