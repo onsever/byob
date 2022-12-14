@@ -33,6 +33,7 @@ export default function RegisterScreen({ navigation }) {
     async (values, actions) => {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       // actions.resetForm();
+      navigation.navigate("Validation", { ...formik.values });
     }
   );
 
@@ -51,7 +52,7 @@ export default function RegisterScreen({ navigation }) {
 
   const handleRegister = () => {
     formik.handleSubmit();
-    navigation.navigate("Validation", { ...formik.values });
+    // navigation.navigate("Validation", { ...formik.values });
   };
 
   const getUserData = async () => {
