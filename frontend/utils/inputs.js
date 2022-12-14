@@ -75,7 +75,7 @@ export const registerInputs = [
   {
     id: 6,
     name: "confirmPassword",
-    keyboardType: "password",
+    keyboardType: "default",
     placeholder: "Confirm Password",
     styles: "",
     title: "Confirm Password",
