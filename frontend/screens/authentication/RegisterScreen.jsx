@@ -1,4 +1,11 @@
-import { View, Text, TouchableOpacity, Image } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  ActivityIndicator,
+  Alert,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "twrnc";
 import Input from "../../components/Input";
@@ -14,6 +21,7 @@ import {
   GOOGLE_FETCH_URL,
   IOS_CLIENT_ID,
 } from "../../constants/googleAuth";
+import { useFetch } from "../../hooks/useFetch";
 
 // ALlows authentication to complete and return back response
 WebBrowser.maybeCompleteAuthSession();
@@ -25,17 +33,31 @@ export default function RegisterScreen({ navigation }) {
     expoClientId: EXPO_CLIENT_ID,
   });
 
+  const fetchUser = useFetch();
+
   const [accessToken, setAccessToken] = useState("");
+  const [data, setData] = useState();
 
   const { formik, validatedInputs } = useInput(
     registerInputs,
     registerSchema,
     async (values, actions) => {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      // actions.resetForm();
-      navigation.navigate("Validation", { ...formik.values });
+      setData(values);
     }
   );
+
+  useEffect(() => {
+    if (fetchUser.result) {
+      if (fetchUser.result.userExists) {
+        Alert.alert(
+          "Invalid Email",
+          "This email is already associated with another account."
+        );
+      } else {
+        navigation.navigate("Validation", { ...formik.values });
+      }
+    }
+  }, [fetchUser.loaded]);
 
   useEffect(() => {
     if (response) {
@@ -43,6 +65,12 @@ export default function RegisterScreen({ navigation }) {
         setAccessToken(response.authentication.accessToken);
     }
   }, [response]);
+
+  useEffect(() => {
+    if (data) {
+      fetchUser.fetch(`user/check-validity/${data.email}`);
+    }
+  }, [data]);
 
   useEffect(() => {
     if (accessToken) {
@@ -74,7 +102,7 @@ export default function RegisterScreen({ navigation }) {
         "verified_email": true
     } 
       */
-      navigation.navigate("Validation", { ...data, isGoogleSignIn: true });
+      setData({ ...data, isGoogleSignIn: true });
     });
   };
 
@@ -130,7 +158,13 @@ export default function RegisterScreen({ navigation }) {
           style={tw`flex flex-row justify-center items-center`}
           onPress={handleRegister}
         >
-          <Image source={require("../../assets/wine_glass.png")} />
+          {fetchUser.loading && <ActivityIndicator />}
+
+          <Image
+            source={require("../../assets/wine_glass.png")}
+            style={fetchUser.loading ? { opacity: 0 } : {}}
+          />
+
           <Text style={tw`text-[#640100] ml-[-4%]`}>SIGN UP</Text>
         </TouchableOpacity>
       </View>
