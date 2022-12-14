@@ -27,9 +27,7 @@ export default function CartScreen({ navigation, route }) {
     orders = orders.map((x) => {
       return x;
     });
-    console.log("orders", orders);
-    console.log("fullCart", order.order);
-    let orderHistory = [...order.order];
+    let orderHistory = [...orders];
 
     orders.map((item) => {
       if (orderHistory.some((x) => x.foodId === item.foodId)) {
