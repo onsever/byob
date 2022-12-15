@@ -16,7 +16,7 @@ import { useFetch } from "../../hooks/useFetch";
 const Item = ({
   title,
   price,
-  guranteedPrice,
+  displayGuaranteedPrice,
   currentPrice,
   onAction,
   _id,
@@ -25,7 +25,7 @@ const Item = ({
     <TouchableOpacity style={tw`flex flex-row`} onPress={onAction}>
       <Text style={tw`font-thin w-40 `}>{title}</Text>
       <Text style={tw`w-15 text-center`}>${price}</Text>
-      <Text style={tw`w-15 text-center`}>${guranteedPrice}</Text>
+      <Text style={tw`w-15 text-center`}>${displayGuaranteedPrice}</Text>
       <Text style={tw`w-15 text-center`}>${currentPrice}</Text>
     </TouchableOpacity>
   </View>
@@ -44,6 +44,7 @@ const DrinksScreen = ({ navigation }) => {
       console.log("Error in getting drinks", error);
     }
     if (result) {
+      console.log("result", result);
       setDrinkData(result);
     }
   }, [loaded]);
