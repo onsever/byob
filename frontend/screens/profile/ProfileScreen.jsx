@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Image,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
@@ -73,16 +74,32 @@ export default function ProfileScreen({ navigation }) {
           <Text>Order History</Text>
         </TouchableOpacity>
       </View>
-
-      <TouchableOpacity
-        style={tw` bg-[#640100] rounded-full p-4 absolute bottom-3 right-3 items-center justify-center`}
-        onPress={() => {
-          dispatch(logout());
-          navigation.replace("Auth");
-        }}
-      >
-        <Ionicons name="log-out-outline" size={30} color="#fff" />
-      </TouchableOpacity>
+      <View style={tw`absolute bottom-2 right-2`}>
+        
+        <TouchableOpacity
+          style={tw` bg-[#640100] rounded-full p-4`}
+          onPress={() => {
+            Alert.alert("Logout", "Are you sure you want to logout?", [
+              {
+                text: "Logout",
+                style: "destructive",
+                onPress: () => {
+                  dispatch(logout()), navigation.replace("Auth");
+                },
+              },
+              {
+                text: "Cancel",
+              },
+            ]);
+          }}
+        >
+          {logout().loading ? (
+            <ActivityIndicator />
+          ) : (
+            <Ionicons name="log-out-outline" size={30} color="#fff" />
+          )}
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 }
