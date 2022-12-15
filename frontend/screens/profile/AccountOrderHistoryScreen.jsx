@@ -91,11 +91,11 @@ export default function AccountOrderHistoryScreen({ navigation }) {
                     source={
                       item?.isDrink
                         ? getDrinkImage(item?.image || "")
-                        : {
-                            uri:
-                              item?.image ||
-                              "https://i.ytimg.com/vi/IVM_CQvgxCg/maxresdefault.jpg",
+                        : item?.image?.trim()
+                        ? {
+                            uri: item?.image,
                           }
+                        : require("../../assets/Food.png")
                     }
                     style={tw`w-16 h-16 rounded-full`}
                   />

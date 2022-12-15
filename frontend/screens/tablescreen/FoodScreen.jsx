@@ -155,6 +155,7 @@ const FoodScreen = ({ navigation }) => {
           );
       }}
       onAdd={() => {
+        console.log("item", item);
         if (item.quantity > 0) {
           let tempCart = [...cart];
           if (
