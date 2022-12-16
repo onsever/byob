@@ -6,7 +6,12 @@ import Colors from "../../utils/Colors";
 
 const Tab = createMaterialTopTabNavigator();
 
-const TableScreen = ({ route }) => {
+const TableScreen = ({ route, navigation }) => {
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      title: "Products",
+    });
+  }, [navigation]);
   return (
     <Tab.Navigator
       screenOptions={{

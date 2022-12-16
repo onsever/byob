@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useLayoutEffect } from "react";
 import {
   View,
   Text,
@@ -23,6 +23,12 @@ export default function CartScreen({ navigation, route }) {
 
   console.log(cart);
 
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: "Cart",
+    });
+  }, [navigation]);
+
   const onPlaceOrder = (orders) => {
     orders = orders.map((x) => {
       return x;
@@ -34,7 +40,7 @@ export default function CartScreen({ navigation, route }) {
         orderHistory = orderHistory.map((o) => {
           let order = { ...o };
           if (order.foodId === item.foodId) {
-            order.quantity = +order.quantity + +item.quantity;
+            order.quantity = +item.quantity;
           } else {
             orderHistory.push(item);
           }
